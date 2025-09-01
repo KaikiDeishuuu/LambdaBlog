@@ -1,12 +1,16 @@
+// file: components/Header.tsx
+
 import siteMetadata from '@/data/siteMetadata'
 import headerNavLinks from '@/data/headerNavLinks'
-import Logo from '@/data/logo.svg'
 import Link from './Link'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
 import SearchButton from './SearchButton'
+import Image from 'next/image'
+import React from 'react' // 确保 React 被导入，这对于 JSX 很重要
 
-const Header = () => {
+const Header = (): React.ReactElement => {
+  // 明确返回类型为 React.ReactElement
   let headerClass = 'flex items-center w-full bg-white dark:bg-gray-950 justify-between py-10'
   if (siteMetadata.stickyNav) {
     headerClass += ' sticky top-0 z-50'
@@ -17,7 +21,13 @@ const Header = () => {
       <Link href="/" aria-label={siteMetadata.headerTitle}>
         <div className="flex items-center justify-between">
           <div className="mr-3">
-            <Logo />
+            <Image
+              src={siteMetadata.siteLogo}
+              alt="logo"
+              width={194} // 请根据您的 logo 调整
+              height={184} // 请根据您的 logo 调整
+	      className="dark:invert-0"
+            />
           </div>
           {typeof siteMetadata.headerTitle === 'string' ? (
             <div className="hidden h-6 text-2xl font-semibold sm:block">
