@@ -26,7 +26,7 @@ const Header = (): React.ReactElement => {
               alt="logo"
               width={194} // 请根据您的 logo 调整
               height={184} // 请根据您的 logo 调整
-	      className="dark:invert-0"
+              className="dark:invert-0"
             />
           </div>
           {typeof siteMetadata.headerTitle === 'string' ? (
