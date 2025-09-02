@@ -1,95 +1,20 @@
 ---
-title: MDX 功能测试页面
-date: '2025-09-02'
-tags: ['test', 'mdx', 'react', 'nextjs']
+title: "Blog Test"
+date: "2024-06-10"
+tags: ["test", "blog"]
 draft: false
-summary: '该文件用于测试在 Markdown 中嵌入交互式 React 组件的功能，确保构建过程正常工作。'
-authors: ['default']
+summary: "This is a test blog post created with MDX."
 ---
 
-import { useState } from 'react';
+# Blog Test
 
-{/*
-  组件定义区
-  在 MDX 文件中，你可以直接定义 React 组件。
-  这些组件可以在文件的任何地方被调用。
-*/}
+Welcome to the test blog post!  
+This post demonstrates how to use MDX in your Next.js blog.
 
-{/* 1. 一个简单的无状态高亮组件 */}
-const Highlight = ({ children, color }) => (
-  <span style={{
-    backgroundColor: color || '#fef08a', // 默认为黄色
-    borderRadius: '4px',
-    padding: '0.2em 0.4em',
-    fontFamily: 'monospace',
-  }}>
-    {children}
-  </span>
-);
+## Features
 
-{/* 2. 一个简单的有状态计数器组件 */}
-const Counter = () => {
-  const [count, setCount] = useState(0);
+- Markdown support
+- React components
+- Easy customization
 
-  return (
-    <div style={{
-      border: '1px solid #e5e7eb',
-      padding: '16px',
-      borderRadius: '8px',
-      marginTop: '1.5em',
-      backgroundColor: '#f9fafb'
-    }}>
-      <p style={{ margin: '0 0 12px 0', fontSize: '1.1em' }}>这是一个交互式计数器：</p>
-      <strong style={{ fontSize: '1.5em', marginRight: '16px' }}>{count}</strong>
-      <button onClick={() => setCount(c => c + 1)} style={{ marginRight: '8px' }}>
-        增加 +1
-      </button>
-      <button onClick={() => setCount(c => c - 1)}>
-        减少 -1
-      </button>
-    </div>
-  );
-};
-
-
-# MDX 混合内容测试
-
-欢迎来到 MDX 测试页面。本文档旨在验证 Markdown 和 React 组件的集成是否正常。
-
-## 标准 Markdown 语法
-
-首先，我们来确认基础的 Markdown 功能是否完好。
-
-这是一个包含 *斜体*、**粗体** 和 `行内代码` 的段落。
-
-- 无序列表项 1
-- 无序列表项 2
-  - 嵌套列表项 2.1
-
-1. 有序列表项 1
-2. 有序列表项 2
-
-> 这是一个引用块。
-> MDX 的强大之处在于它将内容创作的简洁性与组件驱动开发的灵活性结合了起来。
-
-更多信息可以参考 [Next.js 官方文档](https://nextjs.org/docs)。
-
----
-
-## 嵌入式 React 组件测试
-
-接下来是 MDX 的核心功能：在内容中无缝使用 React 组件。
-
-### 无状态组件：`<Highlight />`
-
-我们可以用刚刚定义的组件来 <Highlight>高亮重要的文本</Highlight>。由于它是一个 React 组件，我们可以轻松地给它传递 props，比如改变颜色：<Highlight color="#bae6fd">像这样变成蓝色</Highlight>。
-
-### 有状态组件：`<Counter />`
-
-下面是一个更复杂的例子，它拥有自己的内部状态。你可以点击按钮来与它互动，这个状态完全由组件自己管理，独立于页面的其他部分。
-
-<Counter />
-
-<br />
-
-如果这个页面能够成功构建和显示，那么证明您的 MDX 环境配置正确无误。
+Feel free to edit this post and add more content.
