@@ -1,0 +1,106 @@
+---
+title: DataStructure and Algorithms
+date: '2025-09-02'
+tags: ['data','cpp','algorithm']
+draft: false
+summary: 'In this article, I will document my learning process of data structures and algorithms and share my takeaways.'
+authors: ['default']
+---
+
+# **Data Structure and algorithms**
+
+## **DAY1: **Two pointer 双指针   
+
+Two pointer: 这里以移除元素为例。(给你一个数组 `nums` 和一个值 `val`，你需要 **[原地](https://baike.baidu.com/item/原地算法)** 移除所有数值等于 `val` 的元素。元素的顺序可能发生改变。然后返回 `nums` 中与 `val` 不同的元素的数量。)
+
+元素逆序、奇偶数顺序调整、以及移除元素都可以使用双指针(Two Pointer)的方法来解决。
+
+```c++
+int removeElement(int *nums, int val){
+	int *p = nums;//nums为数组nums起始地址。
+	if ( size == 0){return 0;}//当nums为空数组时，此时若q指针发生偏移nums + size -1 = 0 + 0 -1;会发生指针零偏，因为此时q为空指针。未定义行为（Undefined Behavior）错误
+	int * q = nums + size - 1;
+    while(p <= q){
+        if(*p != val){
+            p++;
+            continue;
+        }
+        else if(*q == val){
+            q--;
+            continue;
+        }
+        else {
+            *p = *q;
+            *q = val;
+            p++;
+            q--;
+        }
+    }
+	return p - nums; // 返回非val数值的element个数，就是p指针的偏移数减去nums数组的起始地址0.
+    
+}
+//另外，对于数值奇偶性的判断，目前了解有两种方法，% 和 &
+int main(){
+    int a;
+    a % 2 == 0 //则a为偶数。
+    (a & 0x1) == 0 //则a为偶数
+}
+//如你要判断奇偶性，推荐用 (value & 1)，它更快（不涉及除法）。
+```
+
+## DAY2 :List 链表
+
+内存块分配的时候是挨个分配，但释放的时候不是一块释放，程序运行的时间、结束的先后顺序不同，假如先分配的内存块被释放掉，其后面挨着的内存没有被释放，则该块空闲内存块就称为内存碎片。碎片化导致空闲的内存没有办法连接在一起。内存碎片的存在导致在开辟大片空白内存时的失败，由于不连续的碎片化内存。
+
+数组要求内存是绝对的连续的，而链表里每一个Node都是独立分配的，为了从当前节点能够找到下一个节点，因此一个节点Node地组成有data(数据域)和next(地址域)——>存储的是下一个节点Node的地址。 地址域一般是一个point指向下一个Node本身。对于链表来说最后一个节点的地址域是nullptr.节点是Node类型，next指向的是节点Node,既不是数据域也不是地址域！
+
+```c++
+struct Node{
+    int data;
+    Node* next; 
+}
+```
+
+单链表：每一个节点只能跳到下一个节点。
+
+## DAY3 :List 链表的头插、尾插、删除、批量删除、查询
+
+单向链表的头插和尾插，尾插需要建立局部指针变量遍历链表找到next_指针为nullptr的tail node,时间复杂度为O(n).而头插则是直接将新的node插入head与first node之间，先将新的node的next指向head的next_指针(也就是原来的第一个node本身)，然后将head的next指针指向新的node.
+
+单链表的搜索时间复杂度O(n),必须从第一个节点开始遍历整个链表才能找到所需节点。链表的搜索和数组的下标访问和随机访问是两回事，前者是遍历后者则是索引index,数组的访问时间复杂度是O(1)。但是数组的缺点也很明显，非末尾位置增加或者删除元素需要进行大量的数据移动O(n).同时链表的增加和删除的时间复杂度是O(1).
+
+C A P 定理 -> 一致性 可用性 分区容错性 最多同时满足两个条件。 
+
+数组：下标访问/随机访问多、搜索多。 链表：删除、增加多。
+
+## DAY4 :链表的逆序*
+
+```c++
+void ReverseList(){
+        Node* prev = nullptr;
+        Node* next = nullptr;
+        Node* current = head_->next_;
+        
+        while(current!= nullptr){
+            next = current->next_;
+            current->next_ = prev;
+            prev = current;
+            current = next;
+        }
+        head_->next_ = prev;
+    }
+    void ReverseList2(){
+        Node* current;
+        Node* next;
+        for(current = head_->next_,head_->next_ = nullptr;current!=nullptr;current = next){
+            next = current->next_;
+            current->next_ = head_->next_;
+            head_->next_ = current;
+        }
+    }
+```
+
+第一种方法就是用三个node分别记录要操作的节点顺序，首先在改变current next_指针指向之前先把原本指向的下个节点用next node保存，然后再改变指向为之前的prev节点也就是current的上一个节点，之后将current指向之前next保存的下一个节点，并将prev指向已经操作完成的current指向的当前节点。
+
+第二种方法是使用头插法，首先将current指向head->next指向的第一个node,然后将head->next指向nullptr,然后利用next保存current->next指向的下一个节点，然后将current->next指向head->next所指向的上一个节点（current）,改变head->next指向为当前节点current,这样head指向的第一个节点也就是我们最新插入的current这个节点，而current->next则在之前指向了原本head->next指向的之前的current节点。简而言之就是首先利用current->next指向head->next所指向的之前的current节点，然后将head->next指向当前的current节点，这样最新插入的current成为逆序链表的第一个节点，而通过current->next=head->next和head->next=current.将逆序的节点串联起来。
+
