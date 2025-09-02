@@ -10,8 +10,20 @@ summary: "This is a test blog post created with MDX."
 
 Welcome to the test blog post!  
 This post demonstrates how to use MDX in your Next.js blog.
-anyway,fk u libsecret.
+Anyway, fk u libsecret.
+import React from 'react';
 
+const TestComponent = () => {
+  return (
+    <div style={{ padding: '10px', backgroundColor: '#f0f0f0', borderRadius: '5px' }}>
+      <p>This is a React component rendered inside an MDX file!</p>
+    </div>
+  );
+};
+
+export default TestComponent;
+
+<TestComponent />
 ## Features
 
 - Markdown support
