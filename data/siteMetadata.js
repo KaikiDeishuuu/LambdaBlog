@@ -1,6 +1,6 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'SuiXiangBiJi',
+  title: "Kaiki's Blog",
   author: 'KaikiDeishuu',
   headerTitle: 'HitagiBlog',
   description: 'A blog about my working and learning',
