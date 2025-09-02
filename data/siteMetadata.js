@@ -46,33 +46,25 @@ const siteMetadata = {
     provider: 'buttondown',
   },
   comments: {
-    // If you want to use an analytics provider you have to add it to the
-    // content security policy in the `next.config.js` file.
-    // Select a provider and use the environment variables associated to it
-    // https://vercel.com/docs/environment-variables
-    provider: 'giscus', // supported providers: giscus, utterances, disqus
+    // 你必须提供一个 provider，这里我们选择 'giscus'
+    provider: 'giscus', 
     giscusConfig: {
-      // Visit the link below, and follow the steps in the 'configuration' section
-      // https://giscus.app/
-      repo: process.env.NEXT_PUBLIC_GISCUS_REPO,
-      repositoryId: process.env.NEXT_PUBLIC_GISCUS_REPOSITORY_ID,
-      category: process.env.NEXT_PUBLIC_GISCUS_CATEGORY,
-      categoryId: process.env.NEXT_PUBLIC_GISCUS_CATEGORY_ID,
-      mapping: 'pathname', // supported options: pathname, url, title
-      reactions: '1', // Emoji reactions: 1 = enable / 0 = disable
-      // Send discussion metadata periodically to the parent window: 1 = enable / 0 = disable
+      // 在这里填写你的 "用户名/仓库名"
+      repo: process.env.NEXT_PUBLIC_GISCUS_REPO || 'KaikiDeishuuu/LambdaBlog',
+      // 下面这两个 ID 从 giscus.app 网站上复制过来
+      repositoryId: process.env.NEXT_PUBLIC_GISCUS_REPOSITORY_ID || 'R_kgDOPn8ZjQ',
+      category: process.env.NEXT_PUBLIC_GISCUS_CATEGORY || 'Announcements',
+      categoryId: process.env.NEXT_PUBLIC_GISCUS_CATEGORY_ID || 'DIC_kwDOPn8Zjc4Cu4jg',
+      mapping: 'pathname', // 按路径名映射
+      reactions: '1', // 启用评论的 emoji 反应
+      // 元数据配置，'0' 表示不发送
       metadata: '0',
-      // theme example: light, dark, dark_dimmed, dark_high_contrast
-      // transparent_dark, preferred_color_scheme, custom
+      // 主题设置
       theme: 'light',
-      // theme when dark mode
       darkTheme: 'transparent_dark',
-      // If the theme option above is set to 'custom`
-      // please provide a link below to your custom theme css file.
-      // example: https://giscus.app/themes/custom_example.css
+      // Giscus 组件的其他选项
       themeURL: '',
-      // This corresponds to the `data-lang="en"` in giscus's configurations
-      lang: 'en',
+      lang: 'zh-CN', // 将 Giscus 界面设置为中文
     },
   },
   search: {

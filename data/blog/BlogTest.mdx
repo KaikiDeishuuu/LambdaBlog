@@ -20,6 +20,31 @@ $$
 这是公式块。 F = MA
 $$
 
+```cpp
+void ReverseList() {
+    Node* prev = nullptr;
+    Node* next = nullptr;
+    Node* current = head_->next_;
+
+    while (current != nullptr) {
+        next = current->next_;
+        current->next_ = prev;
+        prev = current;
+        current = next;
+    }
+    head_->next_ = prev;
+}
+
+void ReverseList2() {
+    Node* current;
+    Node* next;
+    for (current = head_->next_, head_->next_ = nullptr; current != nullptr; current = next) {
+        next = current->next_;
+        current->next_ = head_->next_;
+        head_->next_ = current;
+    }
+}
+```
 
 
 ## Features

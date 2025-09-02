@@ -1,142 +1,152 @@
-@reference "./tailwind.css";
+/* css/prism.css (Atom Dark Theme with custom font settings) */
 
 /**
- * CSS Styles for code highlighting.
- * Feel free to customize token styles 
- * by copying from a prismjs compatible theme:
- * https://github.com/PrismJS/prism-themes
+ * atom-dark theme for `prism.js`
+ * Based on Atom's `atom-dark` theme: https://github.com/atom/atom-dark-syntax
+ * @author Joe Gibson (@gibsjose)
  */
 
-/* Code title styles */
-.remark-code-title {
-  @apply rounded-xs bg-gray-700 px-5 py-3 font-mono text-sm font-bold text-gray-200 dark:bg-gray-800;
+code[class*="language-"],
+pre[class*="language-"] {
+	color: #c5c8c6;
+	text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+
+	/* 👇 1. 这里是修改后的字体和大小 👇 */
+	font-family: 'JetBrains Mono', Inconsolata, Monaco, Consolas, 'Courier New', Courier, monospace;
+	font-size: 18px;
+
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
 }
 
-.remark-code-title + div > pre {
-  @apply mt-0 rounded-t-none;
+/* Code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+	border-radius: 0.3em;
 }
 
-/* Code block styles */
-.code-highlight {
-  @apply float-left min-w-full;
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	/* 👇 2. 这里的背景色只在深色模式下生效 👇 */
+	background: #1d1f21;
 }
 
-.code-line {
-  @apply -mx-4 block border-l-4 border-transparent pr-4 pl-4;
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
 }
 
-.code-line.inserted {
-  @apply bg-green-500/20;
-}
+/* --- (下面的所有 token 颜色保持不变) --- */
 
-.code-line.deleted {
-  @apply bg-red-500/20;
-}
-
-.highlight-line {
-  @apply border-primary-500 -mx-4 border-l-4 bg-gray-700/50;
-}
-
-.line-number::before {
-  @apply mr-4 -ml-2 inline-block w-4 text-right text-gray-400;
-  content: attr(line);
-}
-
-/* Token styles */
-/**
- * MIT License
- * Copyright (c) 2018 Sarah Drasner
- * Sarah Drasner's[@sdras] Night Owl
- * Ported by Sara vieria [@SaraVieira]
- * Added by Souvik Mandal [@SimpleIndian]
- */
 .token.comment,
 .token.prolog,
+.token.doctype,
 .token.cdata {
-  color: rgb(99, 119, 119);
-  font-style: italic;
+	color: #7C7C7C;
 }
 
 .token.punctuation {
-  color: rgb(199, 146, 234);
+	color: #c5c8c6;
 }
 
 .namespace {
-  color: rgb(178, 204, 214);
+	opacity: .7;
 }
 
-.token.deleted {
-  color: rgba(239, 83, 80, 0.56);
-  font-style: italic;
+.token.property,
+.token.keyword,
+.token.tag {
+	color: #96CBFE;
+}
+
+.token.class-name {
+	color: #FFFFB6;
+	text-decoration: underline;
+}
+
+.token.boolean,
+.token.constant {
+	color: #99CC99;
 }
 
 .token.symbol,
-.token.property {
-  color: rgb(128, 203, 196);
-}
-
-.token.tag,
-.token.operator,
-.token.keyword {
-  color: rgb(127, 219, 202);
-}
-
-.token.boolean {
-  color: rgb(255, 88, 116);
+.token.deleted {
+	color: #f92672;
 }
 
 .token.number {
-  color: rgb(247, 140, 108);
-}
-
-.token.constant,
-.token.function,
-.token.builtin,
-.token.char {
-  color: rgb(130, 170, 255);
+	color: #FF73FD;
 }
 
 .token.selector,
-.token.doctype {
-  color: rgb(199, 146, 234);
-  font-style: italic;
-}
-
 .token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
 .token.inserted {
-  color: rgb(173, 219, 103);
-  font-style: italic;
+	color: #A8FF60;
 }
 
-.token.string,
-.token.url,
-.token.entity,
+.token.variable {
+	color: #C6C5FE;
+}
+
+.token.operator {
+	color: #EDEDED;
+}
+
+.token.entity {
+	color: #FFFFB6;
+	cursor: help;
+}
+
+.token.url {
+	color: #96CBFE;
+}
+
 .language-css .token.string,
 .style .token.string {
-  color: rgb(173, 219, 103);
+	color: #87C38A;
 }
 
-.token.class-name,
 .token.atrule,
 .token.attr-value {
-  color: rgb(255, 203, 139);
+	color: #F9EE98;
 }
 
-.token.regex,
-.token.important,
-.token.variable {
-  color: rgb(214, 222, 235);
+.token.function {
+	color: #DAD085;
+}
+
+.token.regex {
+	color: #E9C062;
+}
+
+.token.important {
+	color: #fd971f;
 }
 
 .token.important,
 .token.bold {
-  font-weight: bold;
+	font-weight: bold;
 }
 
 .token.italic {
-  font-style: italic;
-}
-
-.token.table {
-  display: inline;
+	font-style: italic;
 }
