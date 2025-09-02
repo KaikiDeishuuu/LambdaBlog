@@ -1,82 +1,95 @@
 ---
-title: BlogTest
-date: '2025-09-01'
-tags: ['nextjs','vercel','test']
+title: MDX 功能测试页面
+date: '2025-09-02'
+tags: ['test', 'mdx', 'react', 'nextjs']
 draft: false
-summary: 'my first blog'
+summary: '该文件用于测试在 Markdown 中嵌入交互式 React 组件的功能，确保构建过程正常工作。'
 authors: ['default']
 ---
 
 import { useState } from 'react';
 
-// 这是一个可以在 MDX 中使用的 React 组件
+{/*
+  组件定义区
+  在 MDX 文件中，你可以直接定义 React 组件。
+  这些组件可以在文件的任何地方被调用。
+*/}
+
+{/* 1. 一个简单的无状态高亮组件 */}
 const Highlight = ({ children, color }) => (
   <span style={{
-    backgroundColor: color || 'yellow',
-    borderRadius: '3px',
-    padding: '0.2rem',
+    backgroundColor: color || '#fef08a', // 默认为黄色
+    borderRadius: '4px',
+    padding: '0.2em 0.4em',
+    fontFamily: 'monospace',
   }}>
     {children}
   </span>
 );
 
-// 这是一个带有状态的交互式 React 组件
+{/* 2. 一个简单的有状态计数器组件 */}
 const Counter = () => {
   const [count, setCount] = useState(0);
+
   return (
-    <div style={{ border: '1px solid #ddd', padding: '1rem', marginTop: '1rem' }}>
-      <p>当前计数: {count}</p>
-      <button onClick={() => setCount(count + 1)}>点击增加</button>
-      <button onClick={() => setCount(count - 1)}>点击减少</button>
+    <div style={{
+      border: '1px solid #e5e7eb',
+      padding: '16px',
+      borderRadius: '8px',
+      marginTop: '1.5em',
+      backgroundColor: '#f9fafb'
+    }}>
+      <p style={{ margin: '0 0 12px 0', fontSize: '1.1em' }}>这是一个交互式计数器：</p>
+      <strong style={{ fontSize: '1.5em', marginRight: '16px' }}>{count}</strong>
+      <button onClick={() => setCount(c => c + 1)} style={{ marginRight: '8px' }}>
+        增加 +1
+      </button>
+      <button onClick={() => setCount(c => c - 1)}>
+        减少 -1
+      </button>
     </div>
   );
 };
 
-# MDX 功能测试页面
 
-欢迎！这是一个 `.mdx` 文件，它允许你无缝地在 Markdown 文档中混合使用 **React 组件**。
+# MDX 混合内容测试
 
-## 什么是 MDX？
+欢迎来到 MDX 测试页面。本文档旨在验证 Markdown 和 React 组件的集成是否正常。
 
-MDX 是一种 Markdown 的超集，它让你能够在 Markdown 内容中直接使用 JSX 语法。这意味着你可以像编写标准 Markdown 一样编写内容，同时也能随时引入交互式的 React 组件。
+## 标准 Markdown 语法
 
-这是一个普通段落。你可以使用*斜体*、**粗体**，或者 `行内代码`。
+首先，我们来确认基础的 Markdown 功能是否完好。
 
-### 主要特性
+这是一个包含 *斜体*、**粗体** 和 `行内代码` 的段落。
 
-- **Markdown 语法**: 支持所有你熟悉的 Markdown 功能。
-- **JSX 支持**: 可以直接在文件中编写和导入 React 组件。
-- **组件导入/导出**: 可以像在 JavaScript 模块中一样导入和导出数据或组件。
-- **强大的交互性**: 为你的静态内容增添动态功能。
+- 无序列表项 1
+- 无序列表项 2
+  - 嵌套列表项 2.1
 
-## 组件测试
+1. 有序列表项 1
+2. 有序列表项 2
 
-下面，我们将测试一些嵌入的 React 组件。
+> 这是一个引用块。
+> MDX 的强大之处在于它将内容创作的简洁性与组件驱动开发的灵活性结合了起来。
 
-### 1. 高亮组件测试
-
-我们可以使用刚刚定义的 `Highlight` 组件来 <Highlight color="#a7f3d0">高亮显示文本</Highlight>。这比单纯使用 HTML 的 `<mark>` 标签更具灵活性。你也可以传入不同的颜色，例如 <Highlight color="lightblue">这种蓝色</Highlight>。
-
-### 2. 计数器组件测试
-
-这是一个更复杂的例子，一个拥有自己状态的计数器组件。你可以点击按钮来与它互动。
-
-<Counter />
-
-## 列表和链接
-
-MDX 完全兼容标准的 Markdown 列表和链接。
-
-*   **第一项**: 这是无序列表的第一项。
-*   **第二项**: 这是第二项。
-    *   子列表项。
-
-1.  **第一项**: 这是有序列表的第一项。
-2.  **第二项**: 这是第二项。
-
-更多关于 MDX 的信息，请访问 [官方网站](https://mdxjs.com/)。
+更多信息可以参考 [Next.js 官方文档](https://nextjs.org/docs)。
 
 ---
 
-感谢你的测试！这个文件展示了 MDX 的核心能力。
+## 嵌入式 React 组件测试
 
+接下来是 MDX 的核心功能：在内容中无缝使用 React 组件。
+
+### 无状态组件：`<Highlight />`
+
+我们可以用刚刚定义的组件来 <Highlight>高亮重要的文本</Highlight>。由于它是一个 React 组件，我们可以轻松地给它传递 props，比如改变颜色：<Highlight color="#bae6fd">像这样变成蓝色</Highlight>。
+
+### 有状态组件：`<Counter />`
+
+下面是一个更复杂的例子，它拥有自己的内部状态。你可以点击按钮来与它互动，这个状态完全由组件自己管理，独立于页面的其他部分。
+
+<Counter />
+
+<br />
+
+如果这个页面能够成功构建和显示，那么证明您的 MDX 环境配置正确无误。
