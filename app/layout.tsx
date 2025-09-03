@@ -3,6 +3,7 @@
 import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
 import 'remark-github-blockquote-alert/alert.css'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 // --- ADDED: 导入 Contentlayer 相关的工具 ---
 import { allBlogs } from 'contentlayer/generated'
