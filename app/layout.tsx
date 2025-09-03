@@ -1,6 +1,13 @@
+// app/layout.tsx
+
 import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
 import 'remark-github-blockquote-alert/alert.css'
+
+// --- ADDED: 导入 Contentlayer 相关的工具 ---
+import { allBlogs } from 'contentlayer/generated'
+import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
+// --- END ADDED ---
 
 import { Space_Grotesk } from 'next/font/google'
 import { Analytics, AnalyticsConfig } from 'pliny/analytics'
@@ -19,6 +26,7 @@ const space_grotesk = Space_Grotesk({
 })
 
 export const metadata: Metadata = {
+  // ... (您的 metadata 保持不变)
   metadataBase: new URL(siteMetadata.siteUrl),
   title: {
     default: siteMetadata.title,
@@ -58,7 +66,33 @@ export const metadata: Metadata = {
   },
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+// --- MODIFIED: 将函数转换为 async ---
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // --- ADDED: 在服务器端计算所有统计数据 ---
+  const posts = allCoreContent(sortPosts(allBlogs))
+  const tagCounts: Record<string, number> = {}
+  posts.forEach((post) => post.tags.forEach((tag) => (tagCounts[tag] = (tagCounts[tag] || 0) + 1)))
+
+  const monthlyStats: Record<string, number> = {}
+  posts.forEach((post) => {
+    const month = post.date.substring(0, 7)
+    monthlyStats[month] = (monthlyStats[month] || 0) + 1
+  })
+  const sortedMonthlyStats = Object.entries(monthlyStats).sort(
+    (a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime()
+  )
+  const monthlyLabels = sortedMonthlyStats.map((item) => item[0])
+  const monthlyData = sortedMonthlyStats.map((item) => item[1])
+
+  const dailyStats: Record<string, number> = {}
+  posts.forEach((post) => {
+    const day = post.date.substring(0, 10)
+    dailyStats[day] = (dailyStats[day] || 0) + 1
+  })
+
+  const statsData = { tagCounts, monthlyLabels, monthlyData, dailyStats }
+  // --- END ADDED ---
+
   const basePath = process.env.BASE_PATH || ''
 
   return (
@@ -67,6 +101,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${space_grotesk.variable} scroll-smooth`}
       suppressHydrationWarning
     >
+      {/* ... (您的 <link> 和 <meta> 标签保持不变) ... */}
       <link
         rel="apple-touch-icon"
         sizes="76x76"
@@ -99,7 +134,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>
             <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
-              <Header />
+              {/* --- MODIFIED: 将 statsData 作为 prop 传递给 Header --- */}
+              <Header statsData={statsData} />
               <main className="mb-auto">{children}</main>
             </SearchProvider>
             <Footer />
