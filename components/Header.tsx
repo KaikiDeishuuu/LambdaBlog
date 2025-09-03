@@ -25,7 +25,7 @@ const Header = ({ statsData }: { statsData: StatsData }) => {
   return (
     <>
       <header className={headerClass}>
-        {/* 左侧的 Logo 和标题，保持不变 */}
+        {/* 左侧的 Logo 和标题 */}
         <Link href="/" aria-label={siteMetadata.headerTitle}>
           <div className="flex items-center justify-between">
             <div className="mr-3">
@@ -43,16 +43,13 @@ const Header = ({ statsData }: { statsData: StatsData }) => {
 
         {/* 右侧导航区 */}
         <div className="flex items-center space-x-2 text-sm leading-5 sm:space-x-4">
-          
-          {/* --- 关键修复 1: 这些控件在所有尺寸下都应该可见 --- */}
           <SearchButton />
           <button onClick={handleStatsPanelOpen} aria-label="Show statistics panel" className="p-1">
             <ChartBarSquareIcon className="h-6 w-6 text-gray-900 dark:text-gray-100" />
           </button>
 
-          {/* --- 关键修复 2: 创建一个只在桌面端显示的容器 --- */}
+          {/* 桌面端专用容器 */}
           <div className="hidden items-center space-x-4 sm:flex">
-            {/* 桌面端的文字链接 */}
             {headerNavLinks
               .filter((link) => link.href !== '/')
               .map((link) => (
@@ -64,13 +61,11 @@ const Header = ({ statsData }: { statsData: StatsData }) => {
                   {link.title}
                 </Link>
               ))}
-            {/* 桌面端的主题切换按钮 */}
             <ThemeSwitch />
           </div>
 
-          {/* --- 关键修复 3: MobileNav 组件自己负责在移动端显示 --- */}
+          {/* 移动端专用导航 */}
           <MobileNav />
-          
         </div>
       </header>
 
