@@ -1,4 +1,4 @@
-// file: components/MobileNav.tsx (The Final, Absolutely Cleaned Version)
+// file: components/MobileNav.tsx (The Final, Absolutely Lint-Free Version)
 
 'use client'
 
@@ -74,11 +74,9 @@ const MobileNav = () => {
             >
               <DialogPanel className="flex h-full w-full max-w-xs flex-col bg-white/90 p-6 backdrop-blur-lg dark:bg-gray-950/90">
                 <nav className="flex-grow overflow-y-auto py-8">
-                  {menuItems.map((item, index) => (
-                    <div
-                      key={item.title || `item-${index}`}
-                      className="my-4 flex w-full"
-                    >
+                  {menuItems.map((item) => (
+                    // --- 关键修复：将 key 和 className 合并到同一行 ---
+                    <div key={item.title || `item-${item.type}`} className="my-4 flex w-full">
                       {item.type === 'separator' ? (
                         <div className="w-full border-t border-gray-300 dark:border-gray-700" />
                       ) : item.type === 'theme' ? (
