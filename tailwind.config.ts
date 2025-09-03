@@ -1,5 +1,3 @@
-// file: tailwind.config.ts
-
 import type { Config } from 'tailwindcss'
 // --- 关键修复 1: 将所有 require() 替换为 ESM import ---
 import defaultTheme from 'tailwindcss/defaultTheme'
@@ -10,13 +8,13 @@ import typography from '@tailwindcss/typography'
 
 const config: Config = {
   content: [
-    './app/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-    './layouts/**/*.{js,ts,jsx,tsx}',
-    './data/**/*.mdx',
-    './css/**/*.css',
+    './app/**/*.{js,ts,jsx,tsx}', // 扫描 app 文件夹下的所有 JavaScript/TypeScript 文件
+    './components/**/*.{js,ts,jsx,tsx}', // 扫描 components 文件夹下的所有文件
+    './layouts/**/*.{js,ts,jsx,tsx}', // 扫描 layouts 文件夹下的所有文件
+    './data/**/*.mdx', // 扫描 data 文件夹下的所有 .mdx 文件
+    './css/**/*.css', // 扫描 css 文件夹下的所有 .css 文件
   ],
-  darkMode: 'class',
+  darkMode: 'class', // 使用 class 控制 dark 模式
   theme: {
     extend: {
       lineHeight: {
@@ -39,7 +37,7 @@ const config: Config = {
             a: {
               color: theme('colors.primary.500'),
               '&:hover': {
-                color: `${theme('colors.primary.600')}`,
+                color: theme('colors.primary.600'),
               },
               code: { color: theme('colors.primary.400') },
             },
@@ -60,7 +58,7 @@ const config: Config = {
             a: {
               color: theme('colors.primary.500'),
               '&:hover': {
-                color: `${theme('colors.primary.400')}`,
+                color: theme('colors.primary.400'),
               },
               code: { color: theme('colors.primary.400') },
             },

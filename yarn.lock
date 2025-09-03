@@ -3685,7 +3685,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/forms@npm:^0.5.9":
+"@tailwindcss/forms@npm:^0.5.10":
   version: 0.5.10
   resolution: "@tailwindcss/forms@npm:0.5.10"
   dependencies:
@@ -3862,7 +3862,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/typography@npm:^0.5.15":
+"@tailwindcss/typography@npm:^0.5.16":
   version: 0.5.16
   resolution: "@tailwindcss/typography@npm:0.5.16"
   dependencies:
@@ -12114,9 +12114,9 @@ __metadata:
     "@heroicons/react": ^2.2.0
     "@next/bundle-analyzer": 15.2.4
     "@svgr/webpack": ^8.0.1
-    "@tailwindcss/forms": ^0.5.9
+    "@tailwindcss/forms": ^0.5.10
     "@tailwindcss/postcss": ^4.0.5
-    "@tailwindcss/typography": ^0.5.15
+    "@tailwindcss/typography": ^0.5.16
     "@types/mdx": ^2.0.12
     "@types/react": ^19.0.8
     "@typescript-eslint/eslint-plugin": ^8.12.0
@@ -12163,13 +12163,13 @@ __metadata:
     remark-gfm: ^4.0.0
     remark-github-blockquote-alert: ^1.2.1
     remark-math: ^6.0.0
-    tailwindcss: ^4.0.5
+    tailwindcss: ^4.1.12
     typescript: ^5.1.3
     unist-util-visit: ^5.0.0
   languageName: unknown
   linkType: soft
 
-"tailwindcss@npm:4.1.12, tailwindcss@npm:^4.0.5":
+"tailwindcss@npm:4.1.12, tailwindcss@npm:^4.1.12":
   version: 4.1.12
   resolution: "tailwindcss@npm:4.1.12"
   checksum: 0e41513f117a5be5126ef7afad3167581e2564631376ea6221711f3f33c0ffec46bd1b4b7dd13b6c8f52cda2cd12b48666efbd2a451152ffe09609690392fe4c
