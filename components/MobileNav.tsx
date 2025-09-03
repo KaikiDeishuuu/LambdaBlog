@@ -1,4 +1,4 @@
-// file: components/MobileNav.tsx
+// file: components/MobileNav.tsx (The One True Final Version)
 
 'use client'
 
@@ -40,9 +40,9 @@ const MobileNav = () => {
   ]
 
   return (
-    // --- 关键修复 1: 创建一个根容器，并把 sm:hidden 应用在这里 ---
+    // 关键结构 1: 根容器，用 sm:hidden 来全权负责“只在手机上显示”
     <div className="sm:hidden">
-      {/* 汉堡包按钮，现在它被安全地包裹着 */}
+      {/* 汉堡包按钮，它只负责自己的外观和点击事件 */}
       <button
         aria-label="Toggle Menu"
         aria-expanded={navShow}
@@ -54,7 +54,7 @@ const MobileNav = () => {
         <span className="hamburger-line"></span>
       </button>
 
-      {/* Transition 和 Dialog 弹窗部分 */}
+      {/* 我们之前精心制作的、功能完整的 Transition 和 Dialog 弹窗 */}
       <Transition appear show={navShow} as={Fragment}>
         <Dialog ref={navRef} as="div" className="relative z-50" onClose={onToggleNav}>
           <TransitionChild
@@ -94,14 +94,14 @@ const MobileNav = () => {
                       {item.type === 'separator' ? (
                         <div className="w-24 border-t border-gray-300 dark:border-gray-700" />
                       ) : item.type === 'theme' ? (
-                        <div className="hover:text-primary-500 dark:hover:text-primary-400 flex w-full max-w-[180px] items-center justify-between py-2 text-3xl font-medium text-gray-900 dark:text-gray-100">
+                        <div className="flex w-full max-w-[180px] items-center justify-between py-2 text-3xl font-medium text-gray-900 dark:text-gray-100">
                           <span>{item.title}</span>
                           <ThemeSwitch />
                         </div>
                       ) : (
                         <Link
                           href={item.href}
-                          className="hover:text-primary-500 dark:hover:text-primary-400 py-2 text-3xl font-medium text-gray-900 dark:text-gray-100"
+                          className="py-2 text-3xl font-medium text-gray-900 dark:text-gray-100"
                           onClick={onToggleNav}
                         >
                           {item.title}
