@@ -142,6 +142,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <Footer />
           </SectionContainer>
         </ThemeProviders>
+        <SpeedInsights />
       </body>
     </html>
   )
