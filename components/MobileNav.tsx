@@ -41,20 +41,20 @@ const MobileNav = () => {
         aria-label="Toggle Menu"
         aria-expanded={navShow}
         onClick={onToggleNav}
-        className="hamburger-button flex flex-col justify-center items-center h-8 w-8 space-y-1 text-gray-900 dark:text-gray-100 z-50 relative"
+        className="relative z-50 flex h-8 w-8 flex-col items-center justify-center space-y-1 text-gray-900 dark:text-gray-100"
       >
         <span
-          className={`block w-7 h-0.5 bg-current rounded transition-transform duration-300 ${
+          className={`h-0.5 w-7 rounded bg-current transition-transform duration-300 ${
             navShow ? 'translate-y-2 rotate-45' : ''
           }`}
         />
         <span
-          className={`block w-7 h-0.5 bg-current rounded transition-opacity duration-300 ${
+          className={`h-0.5 w-7 rounded bg-current transition-opacity duration-300 ${
             navShow ? 'opacity-0' : ''
           }`}
         />
         <span
-          className={`block w-7 h-0.5 bg-current rounded transition-transform duration-300 ${
+          className={`h-0.5 w-7 rounded bg-current transition-transform duration-300 ${
             navShow ? '-translate-y-2 -rotate-45' : ''
           }`}
         />
@@ -62,12 +62,7 @@ const MobileNav = () => {
 
       {/* 侧边栏 */}
       <Transition appear show={navShow} as={Fragment}>
-        <Dialog
-          ref={navRef}
-          as="div"
-          className="fixed inset-0 z-40"
-          onClose={onToggleNav}
-        >
+        <Dialog ref={navRef} as="div" className="fixed inset-0 z-40" onClose={onToggleNav}>
           {/* 遮罩 */}
           <TransitionChild
             as={Fragment}
@@ -80,7 +75,10 @@ const MobileNav = () => {
           >
             <div
               className="fixed inset-0 bg-black/30"
-              onClick={onToggleNav} // 点击遮罩关闭
+              onClick={onToggleNav} 
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === 'Enter' && onToggleNav()}
             />
           </TransitionChild>
 
@@ -96,14 +94,14 @@ const MobileNav = () => {
               leaveTo="translate-x-full"
             >
               <DialogPanel
-                className="w-full max-w-xs bg-white/80 p-6 backdrop-blur-lg dark:bg-gray-950/80"
-                onClick={(e) => e.stopPropagation()} // 阻止点击 Panel 关闭
+                className="h-full flex flex-col items-center justify-center w-full max-w-xs bg-white/80 p-6 backdrop-blur-lg dark:bg-gray-950/80"
+                onClick={(e) => e.stopPropagation()}
               >
-                <nav className="flex flex-col items-center justify-center h-full">
+                <nav className="h-full flex flex-col items-center justify-center">
                   {menuItems.map((item, index) => (
                     <div
                       key={item.title || `item-${index}`}
-                      className="my-4 w-full flex justify-center transition-all duration-300"
+                      className={`flex w-full my-4 justify-center transition-all duration-300`}
                       style={{ transitionDelay: `${index * 50}ms` }}
                     >
                       {item.type === 'separator' ? (
@@ -116,7 +114,7 @@ const MobileNav = () => {
                       ) : (
                         <Link
                           href={item.href}
-                          className="py-2 text-2xl font-medium text-gray-900 dark:text-gray-100"
+                          className="text-2xl font-medium py-2 text-gray-900 dark:text-gray-100"
                           onClick={onToggleNav}
                         >
                           {item.title}
