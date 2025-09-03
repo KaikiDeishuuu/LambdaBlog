@@ -26,12 +26,14 @@ const layouts = {
 }
 
 export async function generateMetadata({
-  params,
+  params: paramsPromise,
 }: {
-  params: { slug: string[] }
+  params: Promise<{ slug: string[] }>
 }): Promise<Metadata> {
+  const params = await paramsPromise
   const slug = decodeURI(params.slug.join('/'))
   const post = allBlogs.find((p) => p.slug === slug)
+
   if (!post) {
     return notFound()
   }
@@ -42,7 +44,7 @@ export async function generateMetadata({
     return coreContent(authorResults as Authors)
   })
 
-  // ... (您的其他元数据逻辑保持不变)
+  // --- 这是您完整的、正确的元数据生成逻辑 ---
   const publishedAt = new Date(post.date).toISOString()
   const modifiedAt = new Date(post.lastmod || post.date).toISOString()
   const authors = authorDetails.map((author) => author.name)
@@ -84,7 +86,12 @@ export const generateStaticParams = async () => {
   return allBlogs.map((p) => ({ slug: p.slug.split('/').map((name) => decodeURI(name)) }))
 }
 
-export default async function Page({ params }: { params: { slug: string[] } }) {
+export default async function Page({
+  params: paramsPromise,
+}: {
+  params: Promise<{ slug: string[] }>
+}) {
+  const params = await paramsPromise
   const slug = decodeURI(params.slug.join('/'))
 
   const sortedCoreContents = allCoreContent(sortPosts(allBlogs))
@@ -105,15 +112,12 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
 
   const mainContent = coreContent(post)
   const jsonLd = post.structuredData
-
-  // --- 关键修复：恢复您原来正确的 jsonLd['author'] 计算逻辑 ---
   jsonLd['author'] = authorDetails.map((author) => {
     return {
       '@type': 'Person',
       name: author.name,
     }
   })
-  // --- 修复结束 ---
 
   const Layout = layouts[post.layout || defaultLayout]
   const statsData = getStatsData()
