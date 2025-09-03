@@ -1,10 +1,8 @@
-// file: components/MobileNav.tsx (The One True Final Version)
-
 'use client'
 
 import { useState, useRef, useEffect, Fragment } from 'react'
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
-import { clearAllBodyScrollLocks, disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
+import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 import Link from './Link'
 import headerNavLinks from '@/data/headerNavLinks'
 import ThemeSwitch from './ThemeSwitch'
@@ -31,32 +29,46 @@ const MobileNav = () => {
   }, [])
 
   const menuItems = [
-    ...headerNavLinks.map((link) => ({
-      ...link,
-      type: 'link' as const,
-    })),
+    ...headerNavLinks.map((link) => ({ ...link, type: 'link' as const })),
     { type: 'separator' as const },
     { type: 'theme' as const, title: 'Theme' },
   ]
 
   return (
-    // 关键结构 1: 根容器，用 sm:hidden 来全权负责“只在手机上显示”
     <div className="sm:hidden">
-      {/* 汉堡包按钮，它只负责自己的外观和点击事件 */}
+      {/* 汉堡按钮 */}
       <button
         aria-label="Toggle Menu"
         aria-expanded={navShow}
         onClick={onToggleNav}
-        className="hamburger-button h-8 w-8 rounded text-gray-900 dark:text-gray-100"
+        className="hamburger-button flex flex-col justify-center items-center h-8 w-8 space-y-1 text-gray-900 dark:text-gray-100 z-50 relative"
       >
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
+        <span
+          className={`block w-7 h-0.5 bg-current rounded transition-transform duration-300 ${
+            navShow ? 'translate-y-2 rotate-45' : ''
+          }`}
+        />
+        <span
+          className={`block w-7 h-0.5 bg-current rounded transition-opacity duration-300 ${
+            navShow ? 'opacity-0' : ''
+          }`}
+        />
+        <span
+          className={`block w-7 h-0.5 bg-current rounded transition-transform duration-300 ${
+            navShow ? '-translate-y-2 -rotate-45' : ''
+          }`}
+        />
       </button>
 
-      {/* 我们之前精心制作的、功能完整的 Transition 和 Dialog 弹窗 */}
+      {/* 侧边栏 */}
       <Transition appear show={navShow} as={Fragment}>
-        <Dialog ref={navRef} as="div" className="relative z-50" onClose={onToggleNav}>
+        <Dialog
+          ref={navRef}
+          as="div"
+          className="fixed inset-0 z-40"
+          onClose={onToggleNav}
+        >
+          {/* 遮罩 */}
           <TransitionChild
             as={Fragment}
             enter="ease-out duration-300"
@@ -66,9 +78,13 @@ const MobileNav = () => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black/30" />
+            <div
+              className="fixed inset-0 bg-black/30"
+              onClick={onToggleNav} // 点击遮罩关闭
+            />
           </TransitionChild>
 
+          {/* Panel */}
           <div className="fixed inset-0 flex justify-end">
             <TransitionChild
               as={Fragment}
@@ -79,35 +95,34 @@ const MobileNav = () => {
               leaveFrom="translate-x-0"
               leaveTo="translate-x-full"
             >
-              <DialogPanel className="w-full bg-white/80 p-6 backdrop-blur-lg dark:bg-gray-950/80">
-                <nav className="flex h-full flex-col items-center justify-center">
+              <DialogPanel
+                className="w-full max-w-xs bg-white/80 p-6 backdrop-blur-lg dark:bg-gray-950/80"
+                onClick={(e) => e.stopPropagation()} // 阻止点击 Panel 关闭
+              >
+                <nav className="flex flex-col items-center justify-center h-full">
                   {menuItems.map((item, index) => (
-                    <TransitionChild
+                    <div
                       key={item.title || `item-${index}`}
-                      as="div"
-                      className="my-4"
-                      enter="transition-all ease-in-out duration-300"
-                      enterFrom="opacity-0 transform -translate-y-4"
-                      enterTo="opacity-100 transform translate-y-0"
+                      className="my-4 w-full flex justify-center transition-all duration-300"
                       style={{ transitionDelay: `${index * 50}ms` }}
                     >
                       {item.type === 'separator' ? (
                         <div className="w-24 border-t border-gray-300 dark:border-gray-700" />
                       ) : item.type === 'theme' ? (
-                        <div className="flex w-full max-w-[180px] items-center justify-between py-2 text-3xl font-medium text-gray-900 dark:text-gray-100">
+                        <div className="flex w-full max-w-[180px] items-center justify-between py-2 text-2xl font-medium text-gray-900 dark:text-gray-100">
                           <span>{item.title}</span>
                           <ThemeSwitch />
                         </div>
                       ) : (
                         <Link
                           href={item.href}
-                          className="py-2 text-3xl font-medium text-gray-900 dark:text-gray-100"
+                          className="py-2 text-2xl font-medium text-gray-900 dark:text-gray-100"
                           onClick={onToggleNav}
                         >
                           {item.title}
                         </Link>
                       )}
-                    </TransitionChild>
+                    </div>
                   ))}
                 </nav>
               </DialogPanel>
