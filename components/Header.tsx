@@ -12,30 +12,24 @@ import SearchButton from './SearchButton'
 import Image from 'next/image'
 import StatsPanel from './StatsPanel'
 import { ChartBarSquareIcon } from '@heroicons/react/24/outline'
+import { StatsData } from '../types/stats'
 
-const Header = ({ statsData }) => {
+const Header = ({ statsData }: { statsData: StatsData }) => {
   const [isStatsPanelOpen, setIsStatsPanelOpen] = useState(false)
   const handleStatsPanelOpen = () => setIsStatsPanelOpen(true)
 
-  let headerClass = 'flex items-center w-full bg-white dark:bg-gray-950 justify-between py-10'
-  if (siteMetadata.stickyNav) {
-    headerClass += ' sticky top-0 z-50'
-  }
+  const headerClass =
+    'flex items-center justify-between bg-white py-10 dark:bg-gray-950' +
+    (siteMetadata.stickyNav ? ' sticky top-0 z-50' : '')
 
   return (
     <>
       <header className={headerClass}>
-        {/* Logo and Title (Left side) - No changes here */}
+        {/* 左侧的 Logo 和标题，保持不变 */}
         <Link href="/" aria-label={siteMetadata.headerTitle}>
           <div className="flex items-center justify-between">
             <div className="mr-3">
-              <Image
-                src={siteMetadata.siteLogo}
-                alt="logo"
-                width={194}
-                height={184}
-                className="dark:invert-0"
-              />
+              <Image src={siteMetadata.siteLogo} alt="logo" width={194} height={184} />
             </div>
             {typeof siteMetadata.headerTitle === 'string' ? (
               <div className="hidden h-6 text-2xl font-semibold sm:block">
@@ -47,43 +41,36 @@ const Header = ({ statsData }) => {
           </div>
         </Link>
 
-        {/* Action Buttons (Right side) */}
-        <div className="flex items-center space-x-4 leading-5 sm:space-x-6">
-          {/* Desktop Nav links - No changes here */}
-          <div className="no-scrollbar hidden max-w-40 items-center gap-x-4 overflow-x-auto sm:flex md:max-w-72 lg:max-w-96">
+        {/* --- 这是唯一的、最终的修改 --- */}
+        {/* 右侧的所有导航和按钮 */}
+        <div className="flex items-center text-sm leading-5">
+          {/* 盒子一：桌面工具箱 (只在 sm 及以上屏幕显示: "hidden sm:flex") */}
+          <div className="hidden items-center space-x-4 sm:flex">
+            {/* 桌面端的文字链接 */}
             {headerNavLinks
               .filter((link) => link.href !== '/')
               .map((link) => (
-                <Link key={link.title} href={link.href} /* ...props */>
+                <Link
+                  key={link.title}
+                  href={link.href}
+                  className="font-medium text-gray-900 dark:text-gray-100"
+                >
                   {link.title}
                 </Link>
               ))}
-          </div>
-
-          <SearchButton />
-
-          {/* --- highlight-start --- */}
-          {/* 1. Statistics button is now outside the responsive div, so it's always visible */}
-          <button
-            onClick={handleStatsPanelOpen}
-            aria-label="Show statistics panel"
-            className="rounded-full p-2 hover:bg-gray-200 dark:hover:bg-gray-800"
-          >
-            <ChartBarSquareIcon className="h-6 w-6 text-gray-900 dark:text-gray-100" />
-          </button>
-
-          {/* 2. This div now ONLY contains the ThemeSwitch and is hidden on mobile */}
-          <div className="hidden sm:block">
+            {/* 桌面端的图标按钮 */}
+            <SearchButton />
+            <button onClick={handleStatsPanelOpen} aria-label="Show statistics panel">
+              <ChartBarSquareIcon className="h-6 w-6 text-gray-900 dark:text-gray-100" />
+            </button>
             <ThemeSwitch />
           </div>
 
-          {/* 3. MobileNav no longer needs the onStatsClick prop */}
+          {/* 盒子二：手机工具箱 (只在 sm 以下屏幕显示，因为 MobileNav 内部有 "sm:hidden") */}
           <MobileNav />
-          {/* --- highlight-end --- */}
         </div>
       </header>
 
-      {/* StatsPanel - No changes here */}
       <StatsPanel
         isOpen={isStatsPanelOpen}
         onClose={() => setIsStatsPanelOpen(false)}
