@@ -11,7 +11,7 @@ const siteMetadata = {
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/my_logo.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
   mastodon: 'https://mastodon.social/@mastodonuser',
-  email: 'josephwu019@gmail.com',
+  email: 'kaikideishuuu@163.com',
   github: 'https://github.com/KaikiDeishuuu',
   locale: 'en-US',
   // set to true if you want a navbar fixed to the top
