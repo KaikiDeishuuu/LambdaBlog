@@ -1,0 +1,32 @@
+/* file: styles/mobile-nav.css */
+
+.hamburger-button {
+  position: relative;
+  z-index: 100; /* Ensure it's above the menu panel */
+  transition: transform 0.3s ease-in-out;
+}
+
+.hamburger-line {
+  display: block;
+  width: 28px;
+  height: 3px;
+  margin: 6px auto;
+  background-color: currentColor;
+  border-radius: 3px;
+  transition:
+    transform 0.3s ease-in-out,
+    opacity 0.3s ease-in-out;
+}
+
+/* Transform into 'X' when the menu is open */
+.hamburger-button[aria-expanded='true'] .hamburger-line:nth-child(1) {
+  transform: translateY(9px) rotate(45deg);
+}
+
+.hamburger-button[aria-expanded='true'] .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-button[aria-expanded='true'] .hamburger-line:nth-child(3) {
+  transform: translateY(-9px) rotate(-45deg);
+}

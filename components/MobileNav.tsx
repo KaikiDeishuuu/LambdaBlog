@@ -1,116 +1,139 @@
+// file: components/MobileNav.tsx
+
 'use client'
 
+// 1. 所有必需的 React hooks都在这里导入
+import { useState, useRef, useEffect, Fragment } from 'react'
+
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
-import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
-import { Fragment, useState, useEffect, useRef } from 'react'
+import { clearAllBodyScrollLocks, disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import Link from './Link'
 import headerNavLinks from '@/data/headerNavLinks'
-// --- highlight-start ---
-import ThemeSwitch from './ThemeSwitch' // 1. Import ThemeSwitch
-import { ChartBarSquareIcon } from '@heroicons/react/24/outline' // 2. Import the icon
-// --- highlight-end ---
+import ThemeSwitch from './ThemeSwitch'
+import { ChartBarSquareIcon } from '@heroicons/react/24/outline'
 
-// --- highlight-start ---
-// 3. Accept the `onStatsClick` prop from the Header component
 const MobileNav = ({ onStatsClick }) => {
-  // --- highlight-end ---
+  // 2. State 和 Ref 的完整定义
   const [navShow, setNavShow] = useState(false)
   const navRef = useRef(null)
 
+  // 3. 完整的函数实现
   const onToggleNav = () => {
     setNavShow((status) => {
-      if (status) {
-        enableBodyScroll(navRef.current)
-      } else {
-        disableBodyScroll(navRef.current)
+      // 使用 DialogPanel 的 ref 来锁定滚动
+      if (navRef.current) {
+        if (status) {
+          enableBodyScroll(navRef.current)
+        } else {
+          disableBodyScroll(navRef.current)
+        }
       }
       return !status
     })
   }
 
-  // --- highlight-start ---
-  // 4. Create a handler that closes this nav and opens the stats panel
   const handleStatsClick = () => {
-    onToggleNav() // First, close the mobile navigation
-    onStatsClick() // Then, call the function passed from the parent to open the stats panel
+    onToggleNav() // 先关闭此菜单
+    onStatsClick() // 再打开统计面板
   }
-  // --- highlight-end ---
 
+  // 组件卸载时清除所有滚动锁定
   useEffect(() => {
     return clearAllBodyScrollLocks
   }, [])
 
+  // 4. 类型安全的 menuItems 数组，确保每个对象都有 'type' 属性
+  const menuItems = [
+    ...headerNavLinks.map((link) => ({
+      ...link,
+      type: 'link' as const, // 将这些标识为 'link' 类型
+    })),
+    { type: 'separator' as const },
+    { type: 'stats' as const, title: 'Statistics' },
+    { type: 'theme' as const, title: 'Theme' },
+  ]
+
   return (
     <>
-      <button aria-label="Toggle Menu" onClick={onToggleNav} className="sm:hidden">
-        {/* Hamburger Icon SVG (no changes here) */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          className="hover:text-primary-500 dark:hover:text-primary-400 h-8 w-8 text-gray-900 dark:text-gray-100"
-        >
-          {/* ... path data ... */}
-        </svg>
+      <button
+        aria-label="Toggle Menu"
+        aria-expanded={navShow}
+        onClick={onToggleNav}
+        className="hamburger-button h-8 w-8 rounded text-gray-900 sm:hidden dark:text-gray-100"
+      >
+        <span className="hamburger-line"></span>
+        <span className="hamburger-line"></span>
+        <span className="hamburger-line"></span>
       </button>
-      <Transition appear show={navShow} as={Fragment} unmount={false}>
-        <Dialog as="div" onClose={onToggleNav} unmount={false}>
-          {/* ... TransitionChild for background overlay (no changes here) ... */}
+
+      <Transition appear show={navShow} as={Fragment}>
+        <Dialog ref={navRef} as="div" className="relative z-50" onClose={onToggleNav}>
           <TransitionChild
             as={Fragment}
-            enter="transition ease-in-out duration-300 transform"
-            // ... other props ...
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
           >
-            <DialogPanel className="fixed top-0 left-0 z-70 h-full w-full bg-white/95 duration-300 dark:bg-gray-950/98">
-              {/* --- highlight-start --- */}
-              {/* 5. Update the navigation panel content */}
-              <nav
-                ref={navRef}
-                className="mt-8 flex h-full basis-0 flex-col overflow-y-auto px-8 pt-2 text-left"
-              >
-                {/* Main Navigation Links */}
-                {headerNavLinks.map((link) => (
-                  <Link
-                    key={link.title}
-                    href={link.href}
-                    className="hover:text-primary-500 dark:hover:text-primary-400 mb-4 py-2 pr-4 text-2xl font-bold tracking-widest text-gray-900 outline-0 dark:text-gray-100"
-                    onClick={onToggleNav}
-                  >
-                    {link.title}
-                  </Link>
-                ))}
-
-                {/* Separator */}
-                <div className="my-6 border-t border-gray-200 dark:border-gray-800" />
-
-                {/* Secondary Actions */}
-                <div className="flex flex-col gap-y-4">
-                  {/* Statistics Button */}
-                  <button
-                    onClick={handleStatsClick}
-                    className="hover:text-primary-500 dark:hover:text-primary-400 flex w-full items-center text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100"
-                  >
-                    <ChartBarSquareIcon className="mr-4 h-8 w-8" />
-                    Statistics
-                  </button>
-
-                  {/* Theme Switch */}
-                  <div className="hover:text-primary-500 dark:hover:text-primary-400 flex items-center justify-between text-2xl font-bold tracking-widest text-gray-900 dark:text-gray-100">
-                    <span className="py-2">Theme</span>
-                    <ThemeSwitch />
-                  </div>
-                </div>
-              </nav>
-              {/* --- highlight-end --- */}
-              <button
-                className="hover:text-primary-500 dark:hover:text-primary-400 fixed top-7 right-4 z-80 h-16 w-16 p-4 text-gray-900 dark:text-gray-100"
-                aria-label="Toggle Menu"
-                onClick={onToggleNav}
-              >
-                {/* Close Icon SVG (no changes here) */}
-              </button>
-            </DialogPanel>
+            <div className="fixed inset-0 bg-black/30" />
           </TransitionChild>
+
+          <div className="fixed inset-0 flex justify-end">
+            <TransitionChild
+              as={Fragment}
+              enter="transition ease-in-out duration-300 transform"
+              enterFrom="translate-x-full"
+              enterTo="translate-x-0"
+              leave="transition ease-in-out duration-200 transform"
+              leaveFrom="translate-x-0"
+              leaveTo="translate-x-full"
+            >
+              <DialogPanel className="w-full bg-white/80 p-6 backdrop-blur-lg dark:bg-gray-950/80">
+                <nav className="flex h-full flex-col items-center justify-center">
+                  {menuItems.map((item, index) => (
+                    // 5. 使用 'as="div"' 替代 'as={Fragment}' 来应用 style 属性
+                    <TransitionChild
+                      key={item.title || `item-${index}`}
+                      as="div"
+                      className="my-4"
+                      enter="transition-all ease-in-out duration-300"
+                      enterFrom="opacity-0 transform -translate-y-4"
+                      enterTo="opacity-100 transform translate-y-0"
+                      style={{ transitionDelay: `${index * 50}ms` }}
+                    >
+                      {/* 根据 'type' 属性渲染，现在不会有 TS 错误 */}
+                      {item.type === 'separator' ? (
+                        <div className="w-24 border-t border-gray-300 dark:border-gray-700" />
+                      ) : item.type === 'stats' ? (
+                        <button
+                          onClick={handleStatsClick}
+                          className="hover:text-primary-500 dark:hover:text-primary-400 flex items-center py-2 text-3xl font-medium text-gray-900 dark:text-gray-100"
+                        >
+                          <ChartBarSquareIcon className="mr-3 h-7 w-7" />
+                          {item.title}
+                        </button>
+                      ) : item.type === 'theme' ? (
+                        <div className="hover:text-primary-500 dark:hover:text-primary-400 flex w-full max-w-[180px] items-center justify-between py-2 text-3xl font-medium text-gray-900 dark:text-gray-100">
+                          <span>{item.title}</span>
+                          <ThemeSwitch />
+                        </div>
+                      ) : (
+                        <Link
+                          href={item.href}
+                          className="hover:text-primary-500 dark:hover:text-primary-400 py-2 text-3xl font-medium text-gray-900 dark:text-gray-100"
+                          onClick={onToggleNav}
+                        >
+                          {item.title}
+                        </Link>
+                      )}
+                    </TransitionChild>
+                  ))}
+                </nav>
+              </DialogPanel>
+            </TransitionChild>
+          </div>
         </Dialog>
       </Transition>
     </>
