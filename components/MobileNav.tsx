@@ -1,5 +1,3 @@
-// file: components/MobileNav.tsx (The Final, Absolutely Lint-Free Version)
-
 'use client'
 
 import { useState, useRef, useEffect, Fragment } from 'react'
@@ -11,24 +9,18 @@ import ThemeSwitch from './ThemeSwitch'
 
 const MobileNav = () => {
   const [navShow, setNavShow] = useState(false)
-  const navRef = useRef(null)
+  const navRef = useRef<HTMLDivElement>(null)
 
   const onToggleNav = () => {
     setNavShow((status) => {
       if (navRef.current) {
-        if (status) {
-          enableBodyScroll(navRef.current)
-        } else {
-          disableBodyScroll(navRef.current)
-        }
+        status ? enableBodyScroll(navRef.current) : disableBodyScroll(navRef.current)
       }
       return !status
     })
   }
 
-  useEffect(() => {
-    return clearAllBodyScrollLocks
-  }, [])
+  useEffect(() => clearAllBodyScrollLocks, [])
 
   const menuItems = [
     ...headerNavLinks.map((link) => ({ ...link, type: 'link' as const })),
@@ -39,18 +31,24 @@ const MobileNav = () => {
   return (
     <div className="sm:hidden">
       <button
+        type="button"
         aria-label="Toggle Menu"
         aria-expanded={navShow}
         onClick={onToggleNav}
         className="hamburger-button"
       >
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
-        <span className="hamburger-line"></span>
+        <span className="hamburger-line" />
+        <span className="hamburger-line" />
+        <span className="hamburger-line" />
       </button>
 
       <Transition appear show={navShow} as={Fragment}>
-        <Dialog ref={navRef} as="div" className="fixed inset-0 z-40" onClose={onToggleNav}>
+        <Dialog
+          ref={navRef}
+          as="div"
+          className="fixed inset-0 z-50"
+          onClose={onToggleNav}
+        >
           <TransitionChild
             as={Fragment}
             enter="ease-out duration-300"
@@ -62,6 +60,7 @@ const MobileNav = () => {
           >
             <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" />
           </TransitionChild>
+
           <div className="fixed inset-0 flex justify-end">
             <TransitionChild
               as={Fragment}
@@ -75,8 +74,10 @@ const MobileNav = () => {
               <DialogPanel className="flex h-full w-full max-w-xs flex-col bg-white/90 p-6 backdrop-blur-lg dark:bg-gray-950/90">
                 <nav className="flex-grow overflow-y-auto py-8">
                   {menuItems.map((item) => (
-                    // --- 关键修复：将 key 和 className 合并到同一行 ---
-                    <div key={item.title || `item-${item.type}`} className="my-4 flex w-full">
+                    <div
+                      key={item.title || `item-${item.type}`}
+                      className="my-4 flex w-full"
+                    >
                       {item.type === 'separator' ? (
                         <div className="w-full border-t border-gray-300 dark:border-gray-700" />
                       ) : item.type === 'theme' ? (
