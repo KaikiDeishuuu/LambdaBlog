@@ -2,11 +2,7 @@
 
 import { useState, useRef, useEffect, Fragment } from 'react'
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
-import {
-  disableBodyScroll,
-  enableBodyScroll,
-  clearAllBodyScrollLocks,
-} from 'body-scroll-lock'
+import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 import Link from './Link'
 import headerNavLinks from '@/data/headerNavLinks'
 import ThemeSwitch from './ThemeSwitch'
@@ -22,11 +18,8 @@ const MobileNav: React.FC<MobileNavProps> = ({ isOtherPanelOpen = false }) => {
   const onToggleNav = () => {
     setNavShow((status) => {
       if (navRef.current) {
-        if (status) {
-          enableBodyScroll(navRef.current)
-        } else {
-          disableBodyScroll(navRef.current)
-        }
+        if (status) enableBodyScroll(navRef.current)
+        else disableBodyScroll(navRef.current)
       }
       return !status
     })
@@ -42,7 +35,6 @@ const MobileNav: React.FC<MobileNavProps> = ({ isOtherPanelOpen = false }) => {
     { type: 'theme' as const, title: 'Theme' },
   ]
 
-  // 当其他面板打开时隐藏汉堡按钮
   if (isOtherPanelOpen) return null
 
   return (
@@ -91,10 +83,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ isOtherPanelOpen = false }) => {
               <DialogPanel className="flex h-full w-full max-w-xs flex-col bg-white/90 p-6 backdrop-blur-lg dark:bg-gray-950/90">
                 <nav className="flex-grow overflow-y-auto py-8">
                   {menuItems.map((item) => (
-                    <div
-                      key={item.title || `item-${item.type}`}
-                      className="my-4 flex w-full"
-                    >
+                    <div key={item.title || `item-${item.type}`} className="my-4 flex w-full">
                       {item.type === 'separator' ? (
                         <div className="w-full border-t border-gray-300 dark:border-gray-700" />
                       ) : item.type === 'theme' ? (
