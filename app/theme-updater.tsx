@@ -14,7 +14,8 @@ export default function ThemeUpdater() {
       const autoTheme = hour >= 6 && hour < 18 ? 'light' : 'dark'
       if (theme !== autoTheme) setTheme(autoTheme)
     }
-  }, [setTheme, theme])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return null
 }

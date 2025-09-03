@@ -6,8 +6,8 @@ const siteMetadata = {
   description: 'A blog about my working and learning',
   language: 'en-us',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://tailwind-nextjs-starter-blog.vercel.app',
-  siteRepo: 'https://github.com/timlrx/tailwind-nextjs-starter-blog',
+  siteUrl: 'https://lambda-blog-ten.vercel.app',
+  siteRepo: 'https://github.com/KaikiDeishuuu/LambdaBlog',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/my_logo.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
   mastodon: 'https://mastodon.social/@mastodonuser',
