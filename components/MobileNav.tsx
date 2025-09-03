@@ -16,13 +16,17 @@ const MobileNav: React.FC<MobileNavProps> = ({ isOtherPanelOpen = false }) => {
   const navRef = useRef<HTMLDivElement>(null)
 
   const onToggleNav = () => {
-    setNavShow((status) => {
-      if (navRef.current) {
-        status ? enableBodyScroll(navRef.current) : disableBodyScroll(navRef.current)
+  setNavShow((status) => {
+    if (navRef.current) {
+      if (status) {
+        enableBodyScroll(navRef.current)
+      } else {
+        disableBodyScroll(navRef.current)
       }
-      return !status
-    })
-  }
+    }
+    return !status
+  })
+}
 
   useEffect(() => {
     return () => clearAllBodyScrollLocks()
