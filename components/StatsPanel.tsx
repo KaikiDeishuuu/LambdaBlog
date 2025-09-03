@@ -1,151 +1,125 @@
-// components/StatsPanel.tsx
-
+// file: components/StatsPanel.tsx
 'use client'
 
-import { Bar, Line, Pie } from 'react-chartjs-2'
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-  PointElement,
-  LineElement,
-} from 'chart.js'
-import ActivityCalendar from 'react-activity-calendar'
-import { XMarkIcon } from '@heroicons/react/24/solid'
+import { Fragment } from 'react'
+import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
+import { XMarkIcon } from '@heroicons/react/24/outline'
 
-// 注册 Chart.js 模块
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement,
-  PointElement,
-  LineElement
-)
+// 导入我们刚刚创建的三个组件
+import TagPieChart from './TagPieChart'
+import PostActivityCalendar from './ActivityCalendar'
+import KeyMetrics from './KeyMetrics'
 
-// 定义组件接收的 props 类型
-interface StatsPanelProps {
+// 定义 Props 接口，statsData 可选
+interface Props {
   isOpen: boolean
   onClose: () => void
-  statsData: {
-    tagCounts: Record<string, number>
-    monthlyLabels: string[]
-    monthlyData: number[]
-    dailyStats: Record<string, number>
+  statsData?: {
+    tagCounts?: Record<string, number>
+    dailyStats?: Record<string, number>
+    totalPosts?: number
+    totalComments?: number
   }
 }
 
-export default function StatsPanel({ isOpen, onClose, statsData }: StatsPanelProps) {
-  if (!isOpen) {
-    return null // 如果没打开，不渲染任何东西
-  }
+// 模拟的默认空数据，以防数据还未加载
+const defaultData = {
+  tagCounts: {},
+  dailyStats: {},
+  totalPosts: 0,
+  totalComments: 0,
+}
 
-  const { tagCounts, monthlyLabels, monthlyData, dailyStats } = statsData
+const StatsPanel = ({ isOpen, onClose, statsData }: Props) => {
+  // 使用默认值保证安全
+  const {
+    tagCounts = {},
+    dailyStats = {},
+    totalPosts = 0,
+    totalComments = 0,
+  } = statsData || defaultData
 
-  // 排序后的标签
-  const sortedTags = Object.entries(tagCounts).sort((a, b) => b[1] - a[1])
-
-  // 前 10 热门标签
-  const topTags = sortedTags.slice(0, 10)
-
-  // 饼图数据
-  const pieData = {
-    labels: topTags.map(([tag]) => tag),
-    datasets: [
-      {
-        data: topTags.map(([, count]) => count),
-        backgroundColor: [
-          '#3b82f6',
-          '#10b981',
-          '#f59e0b',
-          '#ef4444',
-          '#8b5cf6',
-          '#14b8a6',
-          '#f97316',
-          '#84cc16',
-          '#ec4899',
-          '#6366f1',
-        ],
-      },
-    ],
-  }
-
-  // 条形图数据（所有标签）
-  const barData = {
-    labels: sortedTags.map(([tag]) => tag),
-    datasets: [
-      {
-        label: '标签数量',
-        data: sortedTags.map(([, count]) => count),
-        backgroundColor: '#6366f1',
-      },
-    ],
-  }
-
-  // 折线图数据（月度统计）
-  const lineData = {
-    labels: monthlyLabels,
-    datasets: [
-      {
-        label: '文章发布数',
-        data: monthlyData,
-        borderColor: 'rgb(75, 192, 192)',
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        fill: true,
-      },
-    ],
-  }
-
-  // 日历数据
-  const activityData = Object.entries(dailyStats).map(([date, count]) => ({
-    date,
-    count,
-    level: Math.min(count, 4) as 0 | 1 | 2 | 3 | 4,
-  }))
+  const totalTags = Object.keys(tagCounts).length
 
   return (
-    // 全屏覆盖层
-    <div className="bg-opacity-50 fixed inset-0 z-50 flex items-start justify-center bg-black backdrop-blur-sm">
-      {/* 实际的面板容器 */}
-      <div className="relative mt-8 max-h-[90vh] w-11/12 max-w-6xl overflow-y-auto rounded-xl bg-white p-6 shadow-2xl md:p-8 dark:bg-gray-900">
-        {/* 关闭按钮 */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 rounded-full p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800"
+    <Transition appear show={isOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-50" onClose={onClose}>
+        <TransitionChild
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
         >
-          <XMarkIcon className="h-6 w-6" />
-        </button>
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
+        </TransitionChild>
 
-        <h1 className="mb-6 text-2xl font-bold">博客统计</h1>
+        <div className="fixed inset-0 flex justify-end">
+          <TransitionChild
+            as={Fragment}
+            enter="transition ease-in-out duration-300 transform"
+            enterFrom="translate-x-full"
+            enterTo="translate-x-0"
+            leave="transition ease-in-out duration-200 transform"
+            leaveFrom="translate-x-0"
+            leaveTo="translate-x-full"
+          >
+            <DialogPanel className="flex h-full w-full max-w-lg transform flex-col bg-gray-100 text-left align-middle shadow-xl transition-all dark:bg-gray-900">
+              <div className="flex items-center justify-between border-b border-gray-200 bg-white/50 p-4 dark:border-gray-800 dark:bg-gray-900/50">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">网站统计</h3>
+                <button
+                  type="button"
+                  className="rounded-full p-2 text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800"
+                  onClick={onClose}
+                >
+                  <XMarkIcon className="h-6 w-6" />
+                </button>
+              </div>
 
-        {/* 图表网格布局 */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div className="col-span-1 rounded-lg bg-gray-50 p-4 md:col-span-2 dark:bg-gray-800">
-            <h2 className="mb-4 text-xl font-bold">动态日历</h2>
-            <ActivityCalendar data={activityData} colorScheme="light" showWeekdayLabels />
-          </div>
-          <div className="col-span-1 rounded-lg bg-gray-50 p-4 md:col-span-2 dark:bg-gray-800">
-            <h2 className="mb-4 text-xl font-bold">发布统计图</h2>
-            <Line data={lineData} />
-          </div>
-          <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
-            <h2 className="mb-4 text-xl font-bold">热门标签</h2>
-            <Pie data={pieData} />
-          </div>
-          <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
-            <h2 className="mb-4 text-xl font-bold">所有标签统计</h2>
-            <Bar data={barData} options={{ indexAxis: 'y' }} />
-          </div>
+              <div className="flex-grow space-y-8 overflow-y-auto p-6">
+                {/* 瀑布流动画包裹每个模块 */}
+                <TransitionChild
+                  as="div"
+                  enter="transition-all ease-in-out duration-300"
+                  enterFrom="opacity-0 transform -translate-y-4"
+                  enterTo="opacity-100 transform translate-y-0"
+                  style={{ transitionDelay: `100ms` }}
+                >
+                  <KeyMetrics
+                    totalPosts={totalPosts}
+                    totalTags={totalTags}
+                    totalComments={totalComments}
+                  />
+                </TransitionChild>
+
+                <TransitionChild
+                  as="div"
+                  enter="transition-all ease-in-out duration-300"
+                  enterFrom="opacity-0 transform -translate-y-4"
+                  enterTo="opacity-100 transform translate-y-0"
+                  style={{ transitionDelay: `200ms` }}
+                >
+                  <PostActivityCalendar dailyStats={dailyStats} />
+                </TransitionChild>
+
+                <TransitionChild
+                  as="div"
+                  enter="transition-all ease-in-out duration-300"
+                  enterFrom="opacity-0 transform -translate-y-4"
+                  enterTo="opacity-100 transform translate-y-0"
+                  style={{ transitionDelay: `300ms` }}
+                >
+                  <TagPieChart tagCounts={tagCounts} />
+                </TransitionChild>
+              </div>
+            </DialogPanel>
+          </TransitionChild>
         </div>
-      </div>
-    </div>
+      </Dialog>
+    </Transition>
   )
 }
+
+export default StatsPanel

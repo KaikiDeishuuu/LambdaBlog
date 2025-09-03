@@ -30,3 +30,7 @@
 .hamburger-button[aria-expanded='true'] .hamburger-line:nth-child(3) {
   transform: translateY(-9px) rotate(-45deg);
 }
+/* 新增：统计面板卡片样式 */
+.stat-card {
+  @apply rounded-xl border border-gray-200 bg-white/50 p-4 shadow-sm transition-all duration-300 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800/50 dark:hover:border-gray-600;
+}

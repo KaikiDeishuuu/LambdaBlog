@@ -28,4 +28,3 @@ const animeData: Anime[] = [
 ]
 
 export default animeData
-

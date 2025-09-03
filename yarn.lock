@@ -5338,6 +5338,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"countup.js@npm:^2.8.0":
+  version: 2.9.0
+  resolution: "countup.js@npm:2.9.0"
+  checksum: d2f94385226e38e6d6c9b522eb917eae076fb3db774a3402fece2a57a7744743861264e434f5da68414baf30d7b75645e8371b2f1263765f76576347d4230955
+  languageName: node
+  linkType: hard
+
 "cross-env@npm:^7.0.3":
   version: 7.0.3
   resolution: "cross-env@npm:7.0.3"
@@ -10472,6 +10479,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-countup@npm:^6.5.3":
+  version: 6.5.3
+  resolution: "react-countup@npm:6.5.3"
+  dependencies:
+    countup.js: ^2.8.0
+  peerDependencies:
+    react: ">= 16.3.0"
+  checksum: c9a9776737a469e68beb035b81334879bac2e7d8edb1721f97d115d7b88e87d6ad62fc99083e329650b4416fe33d85b33211719afd531b83399e12d7ded25f89
+  languageName: node
+  linkType: hard
+
 "react-dom@npm:19.0.0":
   version: 19.0.0
   resolution: "react-dom@npm:19.0.0"
@@ -12131,6 +12149,7 @@ __metadata:
     react: 19.0.0
     react-activity-calendar: ^2.7.13
     react-chartjs-2: ^5.3.0
+    react-countup: ^6.5.3
     react-dom: 19.0.0
     reading-time: 1.5.0
     rehype-autolink-headings: ^7.1.0

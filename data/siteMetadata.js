@@ -83,4 +83,15 @@ const siteMetadata = {
   },
 }
 
+// --- highlight-start ---
+// 在文件的这个位置添加 statsData 数组
+siteMetadata.statsData = [
+  { label: '总文章数', value: 128, icon: 'posts' },
+  { label: '总评论数', value: 512, icon: 'comments' },
+  { label: '标签总数', value: 64, icon: 'tags' },
+  { label: '阅读总量', value: 10240, icon: 'views' },
+  // 如果需要，您可以继续添加更多条目
+]
+// --- highlight-end ---
+
 module.exports = siteMetadata
