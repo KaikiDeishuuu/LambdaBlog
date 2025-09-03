@@ -1,3 +1,5 @@
+// file: components/MobileNav.tsx (The Final, Prettier-Compliant Version)
+
 'use client'
 
 import { useState, useRef, useEffect, Fragment } from 'react'
@@ -36,68 +38,27 @@ const MobileNav = () => {
 
   return (
     <div className="sm:hidden">
-      {/* 汉堡按钮 */}
+      {/* 汉堡按钮 (Prettier 格式化) */}
       <button
         aria-label="Toggle Menu"
         aria-expanded={navShow}
         onClick={onToggleNav}
-        className="
-          relative
-          z-50
-          flex
-          h-8
-          w-8
-          flex-col
-          items-center
-          justify-center
-          space-y-1
-          text-gray-900
-          dark:text-gray-100
-        "
+        className="relative z-50 flex h-8 w-8 flex-col items-center justify-center space-y-1 text-gray-900 dark:text-gray-100"
       >
         <span
-          className={`
-            h-0.5
-            w-7
-            rounded
-            bg-current
-            transition-transform
-            duration-300
-            ${navShow ? 'translate-y-2 rotate-45' : ''}
-          `}
+          className={`h-0.5 w-7 rounded bg-current transition-transform duration-300 ${navShow ? 'translate-y-2 rotate-45' : ''}`}
         />
         <span
-          className={`
-            h-0.5
-            w-7
-            rounded
-            bg-current
-            transition-opacity
-            duration-300
-            ${navShow ? 'opacity-0' : ''}
-          `}
+          className={`h-0.5 w-7 rounded bg-current transition-opacity duration-300 ${navShow ? 'opacity-0' : ''}`}
         />
         <span
-          className={`
-            h-0.5
-            w-7
-            rounded
-            bg-current
-            transition-transform
-            duration-300
-            ${navShow ? '-translate-y-2 -rotate-45' : ''}
-          `}
+          className={`h-0.5 w-7 rounded bg-current transition-transform duration-300 ${navShow ? '-translate-y-2 -rotate-45' : ''}`}
         />
       </button>
 
       {/* 侧边栏 */}
       <Transition appear show={navShow} as={Fragment}>
-        <Dialog
-          ref={navRef}
-          as="div"
-          className="fixed inset-0 z-40"
-          onClose={onToggleNav}
-        >
+        <Dialog ref={navRef} as="div" className="fixed inset-0 z-40" onClose={onToggleNav}>
           {/* 遮罩 */}
           <TransitionChild
             as={Fragment}
@@ -130,19 +91,7 @@ const MobileNav = () => {
             >
               <DialogPanel
                 onClick={(e) => e.stopPropagation()}
-                className="
-                  flex
-                  h-full
-                  w-full
-                  max-w-xs
-                  flex-col
-                  items-center
-                  justify-center
-                  bg-white/80
-                  p-6
-                  backdrop-blur-lg
-                  dark:bg-gray-950/80
-                "
+                className="flex h-full w-full max-w-xs flex-col items-center justify-center bg-white/80 p-6 backdrop-blur-lg dark:bg-gray-950/80"
               >
                 <nav className="flex h-full flex-col items-center justify-center">
                   {menuItems.map((item, index) => (
