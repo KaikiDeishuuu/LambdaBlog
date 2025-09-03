@@ -1,18 +1,15 @@
-/* file: css/tailwind.css (整合版本) */
-
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 @source '../node_modules/pliny';
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* --- 主题变量保持原样 --- */
+/* Core theme configuration */
 @theme {
-  /* Font families */
-  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  /* 保留你原有的字体和颜色设计 */
+  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
-  /* Colors */
   --color-primary-50: oklch(0.971 0.014 343.198);
   --color-primary-100: oklch(0.948 0.028 342.258);
   --color-primary-200: oklch(0.899 0.061 343.231);
@@ -37,24 +34,20 @@
   --color-gray-900: oklch(0.21 0.034 264.665);
   --color-gray-950: oklch(0.13 0.028 261.692);
 
-  /* Line heights */
   --line-height-11: 2.75rem;
   --line-height-12: 3rem;
   --line-height-13: 3.25rem;
   --line-height-14: 3.5rem;
 
-  /* Z-index values */
   --z-60: 60;
   --z-70: 70;
   --z-80: 80;
 }
 
-/* --- base layer 保持原有规则 --- */
 @layer base {
   html {
     font-size: 19px;
   }
-
   *,
   ::after,
   ::before,
@@ -76,26 +69,22 @@
   }
 }
 
-/* --- 自定义组件 & utilities --- */
-
-/* 统计面板卡片 */
+/* --- 插入：统计面板卡片 --- */
 .stat-card {
   @apply rounded-xl border border-gray-200 bg-white/50 p-4 shadow-sm transition-all duration-300 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800/50 dark:hover:border-gray-600;
 }
 
-/* 移动端汉堡按钮 */
+/* --- 插入：汉堡按钮样式 --- */
 .hamburger-button {
-  @apply relative z-60 flex h-8 w-8 flex-col items-center justify-center space-y-[6px] transition-transform duration-200 ease-in-out;
+  @apply relative flex h-8 w-8 flex-col items-center justify-center space-y-[6px] transition-transform duration-200 ease-in-out;
 }
 .hamburger-button:active {
   @apply scale-90;
 }
-
 .hamburger-line {
   @apply h-0.5 w-7 rounded-full bg-current transition-all;
   transition-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
 }
-
 .hamburger-button[aria-expanded='true'] .hamburger-line:nth-child(1) {
   @apply translate-y-[8px] rotate-45;
   transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
@@ -108,91 +97,54 @@
   transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
-/* overlay 点击关闭 */
-.mobile-nav-overlay {
-  @apply fixed inset-0 bg-black/30 z-50 cursor-pointer;
-}
-
-/* 侧边栏 panel */
-.mobile-nav-panel {
-  @apply fixed inset-0 flex justify-end z-50;
-}
-.mobile-nav-panel-inner {
-  @apply w-full max-w-xs bg-white/80 p-6 backdrop-blur-lg dark:bg-gray-950/80;
-}
-
-/* 菜单项布局和动画 */
-.mobile-nav-item {
-  @apply my-4 text-2xl font-medium text-gray-900 dark:text-gray-100 flex w-full items-center justify-between;
-  transition: all 0.3s ease-in-out;
-}
-
-/* 菜单主题切换按钮 */
-.mobile-nav-theme {
-  @apply flex w-full max-w-[180px] items-center justify-between py-2 text-3xl font-medium text-gray-900 dark:text-gray-100;
-}
-
-/* 保留 utilities 层和其他已有规则 */
+/* --- 保留你原有的 utilities 层和其他样式 --- */
 @layer utilities {
   .prose {
-    /* ...保持原有内容... */
+    /* ... */
   }
   .prose-invert {
-    /* ...保持原有内容... */
+    /* ... */
   }
 }
 
 .task-list-item::before {
   @apply hidden;
 }
-
 .task-list-item {
   @apply list-none;
 }
-
 .footnotes {
   @apply mt-12 border-t border-gray-200 pt-8 dark:border-gray-700;
 }
-
 .data-footnote-backref {
   @apply no-underline;
 }
-
 .csl-entry {
   @apply my-5;
 }
-
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
-
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
-  transition:
-    background-color 600000s 0s,
-    color 600000s 0s;
+  transition: background-color 600000s 0s, color 600000s 0s;
 }
-
 .katex-display {
   overflow: auto hidden;
 }
-
 .content-header-link {
   opacity: 0;
   margin-left: -24px;
   padding-right: 4px;
 }
-
 .content-header:hover .content-header-link,
 .content-header-link:hover {
   opacity: 1;
 }
-
 .linkicon {
   display: inline-block;
   vertical-align: middle;
