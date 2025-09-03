@@ -46,13 +46,19 @@ const MobileNav = () => {
         className="relative z-50 flex h-8 w-8 flex-col items-center justify-center space-y-1 text-gray-900 dark:text-gray-100"
       >
         <span
-          className={`h-0.5 w-7 rounded bg-current transition-transform duration-300 ${navShow ? 'translate-y-2 rotate-45' : ''}`}
+          className={`h-0.5 w-7 rounded bg-current transition-transform duration-300 ${
+            navShow ? 'translate-y-2 rotate-45' : ''
+          }`}
         />
         <span
-          className={`h-0.5 w-7 rounded bg-current transition-opacity duration-300 ${navShow ? 'opacity-0' : ''}`}
+          className={`h-0.5 w-7 rounded bg-current transition-opacity duration-300 ${
+            navShow ? 'opacity-0' : ''
+          }`}
         />
         <span
-          className={`h-0.5 w-7 rounded bg-current transition-transform duration-300 ${navShow ? '-translate-y-2 -rotate-45' : ''}`}
+          className={`h-0.5 w-7 rounded bg-current transition-transform duration-300 ${
+            navShow ? '-translate-y-2 -rotate-45' : ''
+          }`}
         />
       </button>
 
@@ -97,8 +103,13 @@ const MobileNav = () => {
                   {menuItems.map((item, index) => (
                     <div
                       key={item.title || `item-${index}`}
-                      className={`my-4 flex w-full justify-center transition-all duration-300`}
-                      style={{ transitionDelay: `${index * 50}ms` }}
+                      className="my-4 flex w-full justify-center"
+                      style={{
+                        transitionProperty: 'all',
+                        transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+                        transitionDuration: '300ms',
+                        transitionDelay: `${index * 50}ms`,
+                      }}
                     >
                       {item.type === 'separator' ? (
                         <div className="w-24 border-t border-gray-300 dark:border-gray-700" />
