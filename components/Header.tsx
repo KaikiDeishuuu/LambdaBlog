@@ -41,10 +41,16 @@ const Header = ({ statsData }: { statsData: StatsData }) => {
           </div>
         </Link>
 
-        {/* --- 这是唯一的、最终的修改 --- */}
-        {/* 右侧的所有导航和按钮 */}
-        <div className="flex items-center text-sm leading-5">
-          {/* 盒子一：桌面工具箱 (只在 sm 及以上屏幕显示: "hidden sm:flex") */}
+        {/* 右侧导航区 */}
+        <div className="flex items-center space-x-2 text-sm leading-5 sm:space-x-4">
+          
+          {/* --- 关键修复 1: 这些控件在所有尺寸下都应该可见 --- */}
+          <SearchButton />
+          <button onClick={handleStatsPanelOpen} aria-label="Show statistics panel" className="p-1">
+            <ChartBarSquareIcon className="h-6 w-6 text-gray-900 dark:text-gray-100" />
+          </button>
+
+          {/* --- 关键修复 2: 创建一个只在桌面端显示的容器 --- */}
           <div className="hidden items-center space-x-4 sm:flex">
             {/* 桌面端的文字链接 */}
             {headerNavLinks
@@ -58,16 +64,13 @@ const Header = ({ statsData }: { statsData: StatsData }) => {
                   {link.title}
                 </Link>
               ))}
-            {/* 桌面端的图标按钮 */}
-            <SearchButton />
-            <button onClick={handleStatsPanelOpen} aria-label="Show statistics panel">
-              <ChartBarSquareIcon className="h-6 w-6 text-gray-900 dark:text-gray-100" />
-            </button>
+            {/* 桌面端的主题切换按钮 */}
             <ThemeSwitch />
           </div>
 
-          {/* 盒子二：手机工具箱 (只在 sm 以下屏幕显示，因为 MobileNav 内部有 "sm:hidden") */}
+          {/* --- 关键修复 3: MobileNav 组件自己负责在移动端显示 --- */}
           <MobileNav />
+          
         </div>
       </header>
 
