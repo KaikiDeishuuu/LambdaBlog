@@ -41,28 +41,63 @@ const MobileNav = () => {
         aria-label="Toggle Menu"
         aria-expanded={navShow}
         onClick={onToggleNav}
-        className="relative z-50 flex h-8 w-8 flex-col items-center justify-center space-y-1 text-gray-900 dark:text-gray-100"
+        className="
+          relative
+          z-50
+          flex
+          h-8
+          w-8
+          flex-col
+          items-center
+          justify-center
+          space-y-1
+          text-gray-900
+          dark:text-gray-100
+        "
       >
         <span
-          className={`h-0.5 w-7 rounded bg-current transition-transform duration-300 ${
-            navShow ? 'translate-y-2 rotate-45' : ''
-          }`}
+          className={`
+            h-0.5
+            w-7
+            rounded
+            bg-current
+            transition-transform
+            duration-300
+            ${navShow ? 'translate-y-2 rotate-45' : ''}
+          `}
         />
         <span
-          className={`h-0.5 w-7 rounded bg-current transition-opacity duration-300 ${
-            navShow ? 'opacity-0' : ''
-          }`}
+          className={`
+            h-0.5
+            w-7
+            rounded
+            bg-current
+            transition-opacity
+            duration-300
+            ${navShow ? 'opacity-0' : ''}
+          `}
         />
         <span
-          className={`h-0.5 w-7 rounded bg-current transition-transform duration-300 ${
-            navShow ? '-translate-y-2 -rotate-45' : ''
-          }`}
+          className={`
+            h-0.5
+            w-7
+            rounded
+            bg-current
+            transition-transform
+            duration-300
+            ${navShow ? '-translate-y-2 -rotate-45' : ''}
+          `}
         />
       </button>
 
       {/* 侧边栏 */}
       <Transition appear show={navShow} as={Fragment}>
-        <Dialog ref={navRef} as="div" className="fixed inset-0 z-40" onClose={onToggleNav}>
+        <Dialog
+          ref={navRef}
+          as="div"
+          className="fixed inset-0 z-40"
+          onClose={onToggleNav}
+        >
           {/* 遮罩 */}
           <TransitionChild
             as={Fragment}
@@ -75,7 +110,7 @@ const MobileNav = () => {
           >
             <div
               className="fixed inset-0 bg-black/30"
-              onClick={onToggleNav} 
+              onClick={onToggleNav}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => e.key === 'Enter' && onToggleNav()}
@@ -94,14 +129,26 @@ const MobileNav = () => {
               leaveTo="translate-x-full"
             >
               <DialogPanel
-                className="h-full flex flex-col items-center justify-center w-full max-w-xs bg-white/80 p-6 backdrop-blur-lg dark:bg-gray-950/80"
                 onClick={(e) => e.stopPropagation()}
+                className="
+                  flex
+                  h-full
+                  w-full
+                  max-w-xs
+                  flex-col
+                  items-center
+                  justify-center
+                  bg-white/80
+                  p-6
+                  backdrop-blur-lg
+                  dark:bg-gray-950/80
+                "
               >
-                <nav className="h-full flex flex-col items-center justify-center">
+                <nav className="flex h-full flex-col items-center justify-center">
                   {menuItems.map((item, index) => (
                     <div
                       key={item.title || `item-${index}`}
-                      className={`flex w-full my-4 justify-center transition-all duration-300`}
+                      className={`my-4 flex w-full justify-center transition-all duration-300`}
                       style={{ transitionDelay: `${index * 50}ms` }}
                     >
                       {item.type === 'separator' ? (
@@ -114,8 +161,8 @@ const MobileNav = () => {
                       ) : (
                         <Link
                           href={item.href}
-                          className="text-2xl font-medium py-2 text-gray-900 dark:text-gray-100"
                           onClick={onToggleNav}
+                          className="py-2 text-2xl font-medium text-gray-900 dark:text-gray-100"
                         >
                           {item.title}
                         </Link>
