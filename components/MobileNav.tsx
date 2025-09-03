@@ -18,11 +18,8 @@ const MobileNav: React.FC<MobileNavProps> = ({ isOtherPanelOpen = false }) => {
   const onToggleNav = () => {
   setNavShow((status) => {
     if (navRef.current) {
-      if (status) {
-        enableBodyScroll(navRef.current)
-      } else {
-        disableBodyScroll(navRef.current)
-      }
+      status && enableBodyScroll(navRef.current)
+      !status && disableBodyScroll(navRef.current)
     }
     return !status
   })
@@ -111,3 +108,4 @@ const MobileNav: React.FC<MobileNavProps> = ({ isOtherPanelOpen = false }) => {
 }
 
 export default MobileNav
+
