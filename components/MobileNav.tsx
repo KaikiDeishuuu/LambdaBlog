@@ -52,12 +52,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ isOtherPanelOpen = false }) => {
       </button>
 
       <Transition appear show={navShow} as={Fragment}>
-        <Dialog
-          ref={navRef}
-          as="div"
-          className="fixed inset-0 z-50"
-          onClose={onToggleNav}
-        >
+        <Dialog ref={navRef} as="div" className="fixed inset-0 z-50" onClose={onToggleNav}>
           <TransitionChild
             as={Fragment}
             enter="ease-out duration-300"
