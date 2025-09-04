@@ -1,21 +1,20 @@
-// file: tailwind.config.ts (The Final, Correctly Typed Version)
-
 import type { Config } from 'tailwindcss'
-import type { PluginAPI, PluginUtils } from 'tailwindcss/plugin' // <<< 从 'tailwindcss/plugin' 导入类型
+// --- 关键修复 1: 将所有 require() 替换为 ESM import ---
 import defaultTheme from 'tailwindcss/defaultTheme'
 import colors from 'tailwindcss/colors'
 import forms from '@tailwindcss/forms'
 import typography from '@tailwindcss/typography'
+// --- 修复结束 ---
 
 const config: Config = {
   content: [
-    './app/**/*.{js,ts,jsx,tsx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-    './layouts/**/*.{js,ts,jsx,tsx}',
-    './data/**/*.mdx',
-    './css/**/*.css',
+    './app/**/*.{js,ts,jsx,tsx}', // 扫描 app 文件夹下的所有 JavaScript/TypeScript 文件
+    './components/**/*.{js,ts,jsx,tsx}', // 扫描 components 文件夹下的所有文件
+    './layouts/**/*.{js,ts,jsx,tsx}', // 扫描 layouts 文件夹下的所有文件
+    './data/**/*.mdx', // 扫描 data 文件夹下的所有 .mdx 文件
+    './css/**/*.css', // 扫描 css 文件夹下的所有 .css 文件
   ],
-  darkMode: 'class',
+  darkMode: 'class', // 使用 class 控制 dark 模式
   theme: {
     extend: {
       lineHeight: {
@@ -31,8 +30,8 @@ const config: Config = {
         primary: colors.pink,
         gray: colors.gray,
       },
-      // --- 使用从 PluginAPI 获取的精确类型 ---
-      typography: ({ theme }: PluginUtils) => ({
+      // --- 关键修复 2: 为 theme 提供一个具体的类型，替换 'any' ---
+      typography: ({ theme }: { theme: (path: string) => string }) => ({
         DEFAULT: {
           css: {
             a: {
@@ -69,8 +68,10 @@ const config: Config = {
           },
         },
       }),
+      // --- 修复结束 ---
     },
   },
+  // --- 关键修复 3: 使用导入的变量 ---
   plugins: [forms, typography],
 }
 

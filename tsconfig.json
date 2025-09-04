@@ -1,48 +1,46 @@
-// file: tsconfig.json (The Final, Correctly Configured Version)
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "incremental": true,
+    "target": "ES6",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
+    "composite": true,
     "esModuleInterop": true,
     "module": "esnext",
-    // --- 关键修复：将 "node" 升级为 "bundler" ---
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/components/*": ["components/*"],
+      "@/data/*": ["data/*"],
+      "@/layouts/*": ["layouts/*"],
+      "@/css/*": ["css/*"],
+      "contentlayer/generated": ["./.contentlayer/generated"],
+      "pliny/*": ["node_modules/pliny/*"]
+    },
     "plugins": [
       {
         "name": "next"
       }
     ],
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "contentlayer/generated": [
-        "./.contentlayer/generated"
-      ]
-    }
+    "strictNullChecks": true
   },
   "include": [
+    "next-env.d.ts",
+    "**/*.js",
+    "**/*.mjs",
     "**/*.ts",
     "**/*.tsx",
-    "next-env.d.ts",
-    "types/**/*.d.ts",
+    "**/*.json",
+    ".contentlayer/generated",
+    ".contentlayer/generated/**/*.json",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

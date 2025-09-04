@@ -1,21 +1,12 @@
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
-import { formatDate } from '../node_modules/pliny/utils/formatDate'
-import NewsletterForm from '../node_modules/pliny/ui/NewsletterForm'
-import { format } from 'date-fns'
+import { formatDate } from 'pliny/utils/formatDate'
+import NewsletterForm from 'pliny/ui/NewsletterForm'
 
 const MAX_DISPLAY = 5
 
-interface Post {
-  slug: string
-  date: string
-  title: string
-  summary: string
-  tags: string[]
-}
-
-export default function Home({ posts }: { posts: Post[] }) {
+export default function Home({ posts }) {
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -38,7 +29,7 @@ export default function Home({ posts }: { posts: Post[] }) {
                     <dl>
                       <dt className="sr-only">Published on</dt>
                       <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
-                        <time dateTime={date}>{format(new Date(date), 'MMMM dd, yyyy')}</time>
+                        <time dateTime={date}>{formatDate(date, siteMetadata.locale)}</time>
                       </dd>
                     </dl>
                     <div className="space-y-5 xl:col-span-3">
