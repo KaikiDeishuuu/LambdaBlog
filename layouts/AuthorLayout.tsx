@@ -9,7 +9,6 @@ interface Props {
 }
 
 export default function AuthorLayout({ children, content }: Props) {
-  // 修正后的代码
   const { name, avatar, occupation, company, email, twitter, bluesky, linkedin, github, message } =
     content
 
@@ -26,14 +25,15 @@ export default function AuthorLayout({ children, content }: Props) {
             {avatar && (
               <Image
                 src={avatar}
-                alt="avatar"
-                width={192}
-                height={192}
+                alt={name}
+                width={384} // 原图尺寸，保证 Retina 屏幕清晰
+                height={384}
+                quality={100} // 最大质量
                 className="h-48 w-48 rounded-full object-cover"
+                priority // 提升首屏加载速度
               />
             )}
             <h3 className="pt-4 pb-2 text-2xl leading-8 font-bold tracking-tight">{name}</h3>
-            {/* 👇 在这里添加新的一行来显示 message 👇 */}
             {message && <div className="text-gray-500 dark:text-gray-400">{message}</div>}
             <div className="text-gray-500 dark:text-gray-400">{occupation}</div>
             <div className="text-gray-500 dark:text-gray-400">{company}</div>

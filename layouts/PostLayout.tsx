@@ -65,13 +65,15 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                       {author.avatar && (
                         <Image
                           src={author.avatar}
-                          width={38}
-                          height={38}
-                          alt="avatar"
-                          className="h-10 w-10 rounded-full object-cover"
+                          alt={author.name}
+                          width={176} // 2倍 CSS 显示尺寸，保证 Retina 清晰
+                          height={176}
+                          quality={100} // 最大图片质量
+                          className="h-17 w-17 rounded-full object-cover"
+                          priority // 可选：首屏头像优先加载
                         />
                       )}
-                      <dl className="text-sm leading-5 font-medium whitespace-nowrap">
+                      <dl className="text-lg leading-5 font-medium whitespace-nowrap">
                         <dt className="sr-only">Name</dt>
                         <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
                         <dt className="sr-only">Twitter</dt>
