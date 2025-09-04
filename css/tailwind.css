@@ -7,8 +7,9 @@
 /* Core theme configuration */
 @theme {
   /* 保留你原有的字体和颜色设计 */
-  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-sans:
+    var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
   --color-primary-50: oklch(0.971 0.014 343.198);
   --color-primary-100: oklch(0.948 0.028 342.258);
@@ -97,6 +98,20 @@
   transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
+/* --- 新增：移动端侧边栏样式 --- */
+.sidebar-panel {
+  @apply flex h-full w-full max-w-xs flex-col bg-white/90 p-6 shadow-lg backdrop-blur-lg dark:bg-gray-950/90;
+}
+.menu-item {
+  @apply hover:text-primary-500 flex w-full items-center py-2 text-2xl font-medium text-gray-900 transition-all duration-200 dark:text-gray-100;
+}
+.menu-item span {
+  @apply flex items-center gap-3; /* 图标与文字对齐 */
+}
+.menu-separator {
+  @apply my-4 w-full border-t border-gray-300 dark:border-gray-700;
+}
+
 /* --- 保留你原有的 utilities 层和其他样式 --- */
 @layer utilities {
   .prose {
@@ -107,6 +122,16 @@
   }
 }
 
+/* --- 滚动条隐藏 --- */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* --- 其他保留样式 --- */
 .task-list-item::before {
   @apply hidden;
 }
@@ -122,16 +147,11 @@
 .csl-entry {
   @apply my-5;
 }
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
-  transition: background-color 600000s 0s, color 600000s 0s;
+  transition:
+    background-color 600000s 0s,
+    color 600000s 0s;
 }
 .katex-display {
   overflow: auto hidden;

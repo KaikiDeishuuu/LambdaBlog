@@ -6,6 +6,26 @@ import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'bo
 import Link from './Link'
 import headerNavLinks from '@/data/headerNavLinks'
 import ThemeSwitch from './ThemeSwitch'
+import { FiHome, FiUser, FiSettings } from 'react-icons/fi'
+
+interface LinkItem {
+  type: 'link'
+  title: string
+  href: string
+  icon?: JSX.Element
+}
+
+interface ThemeItem {
+  type: 'theme'
+  title: string
+  icon?: JSX.Element
+}
+
+interface SeparatorItem {
+  type: 'separator'
+}
+
+type MenuItem = LinkItem | ThemeItem | SeparatorItem
 
 interface MobileNavProps {
   isOtherPanelOpen?: boolean
@@ -29,10 +49,25 @@ const MobileNav: React.FC<MobileNavProps> = ({ isOtherPanelOpen = false }) => {
     return () => clearAllBodyScrollLocks()
   }, [])
 
-  const menuItems = [
-    ...headerNavLinks.map((link) => ({ ...link, type: 'link' as const })),
+  const menuItems: MenuItem[] = [
+    ...headerNavLinks.map((link) => ({
+      type: 'link' as const, // 字面量类型
+      title: link.title,
+      href: link.href,
+      icon: <FiHome className="mr-3 inline-block text-xl" />,
+    })),
     { type: 'separator' as const },
-    { type: 'theme' as const, title: 'Theme' },
+    {
+      type: 'theme' as const,
+      title: 'Theme',
+      icon: <FiSettings className="mr-3 inline-block text-xl" />,
+    },
+    {
+      type: 'link' as const,
+      title: 'Profile',
+      href: '/profile',
+      icon: <FiUser className="mr-3 inline-block text-xl" />,
+    },
   ]
 
   if (isOtherPanelOpen) return null
@@ -75,24 +110,26 @@ const MobileNav: React.FC<MobileNavProps> = ({ isOtherPanelOpen = false }) => {
               leaveFrom="translate-x-0"
               leaveTo="translate-x-full"
             >
-              <DialogPanel className="flex h-full w-full max-w-xs flex-col bg-white/90 p-6 backdrop-blur-lg dark:bg-gray-950/90">
+              <DialogPanel className="flex h-full w-full max-w-xs flex-col bg-white/90 p-6 shadow-lg backdrop-blur-lg dark:bg-gray-950/90">
                 <nav className="flex-grow overflow-y-auto py-8">
                   {menuItems.map((item) => (
-                    <div key={item.title || `item-${item.type}`} className="my-4 flex w-full">
+                    <div key={item.type + (item.type !== 'separator' ? item.title : '')}>
                       {item.type === 'separator' ? (
                         <div className="w-full border-t border-gray-300 dark:border-gray-700" />
                       ) : item.type === 'theme' ? (
                         <div className="flex w-full items-center justify-between py-2 text-2xl font-medium text-gray-900 dark:text-gray-100">
-                          <span>{item.title}</span>
+                          <span className="flex items-center">
+                            {item.icon} {item.title}
+                          </span>
                           <ThemeSwitch />
                         </div>
                       ) : (
                         <Link
                           href={item.href}
                           onClick={onToggleNav}
-                          className="w-full py-2 text-2xl font-medium text-gray-900 dark:text-gray-100"
+                          className="flex w-full items-center py-2 text-2xl font-medium text-gray-900 dark:text-gray-100"
                         >
-                          {item.title}
+                          {item.icon} {item.title}
                         </Link>
                       )}
                     </div>
