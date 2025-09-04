@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useRef, useEffect, Fragment } from 'react'
+import { useState, useRef, useEffect, Fragment, JSX } from 'react'
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 import Link from './Link'
 import headerNavLinks from '@/data/headerNavLinks'
 import ThemeSwitch from './ThemeSwitch'
-import { FiHome, FiUser, FiSettings } from 'react-icons/fi'
+import { FiHome, FiFileText, FiTag, FiFilm, FiInfo, FiMoon, FiSun, FiX } from 'react-icons/fi'
 
 interface LinkItem {
   type: 'link'
@@ -50,23 +50,41 @@ const MobileNav: React.FC<MobileNavProps> = ({ isOtherPanelOpen = false }) => {
   }, [])
 
   const menuItems: MenuItem[] = [
-    ...headerNavLinks.map((link) => ({
-      type: 'link' as const, // 字面量类型
-      title: link.title,
-      href: link.href,
-      icon: <FiHome className="mr-3 inline-block text-xl" />,
-    })),
-    { type: 'separator' as const },
     {
-      type: 'theme' as const,
-      title: 'Theme',
-      icon: <FiSettings className="mr-3 inline-block text-xl" />,
+      type: 'link',
+      title: 'Home',
+      href: '/',
+      icon: <FiHome className="mr-3 inline-block text-xl" />,
     },
     {
-      type: 'link' as const,
-      title: 'Profile',
-      href: '/profile',
-      icon: <FiUser className="mr-3 inline-block text-xl" />,
+      type: 'link',
+      title: 'Blog',
+      href: '/blog',
+      icon: <FiFileText className="mr-3 inline-block text-xl" />,
+    },
+    {
+      type: 'link',
+      title: 'Tags',
+      href: '/tags',
+      icon: <FiTag className="mr-3 inline-block text-xl" />,
+    },
+    {
+      type: 'link',
+      title: 'Anime',
+      href: '/anime',
+      icon: <FiFilm className="mr-3 inline-block text-xl" />,
+    },
+    {
+      type: 'link',
+      title: 'About',
+      href: '/about',
+      icon: <FiInfo className="mr-3 inline-block text-xl" />,
+    },
+    { type: 'separator' },
+    {
+      type: 'theme',
+      title: 'Theme',
+      icon: <FiMoon className="mr-3 inline-block text-xl" />,
     },
   ]
 
@@ -135,6 +153,15 @@ const MobileNav: React.FC<MobileNavProps> = ({ isOtherPanelOpen = false }) => {
                     </div>
                   ))}
                 </nav>
+                <div className="flex justify-end">
+                  <button
+                    onClick={onToggleNav}
+                    aria-label="Close Menu"
+                    className="rounded-full p-2 text-gray-900 hover:bg-gray-200 dark:text-gray-100 dark:hover:bg-gray-800"
+                  >
+                    <FiX className="text-2xl" />
+                  </button>
+                </div>
               </DialogPanel>
             </TransitionChild>
           </div>

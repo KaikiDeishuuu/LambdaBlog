@@ -169,3 +169,6 @@ input:-webkit-autofill:focus {
   display: inline-block;
   vertical-align: middle;
 }
+.sidebar-close-button {
+  @apply absolute top-4 right-4 rounded-full p-2 hover:bg-gray-200 dark:hover:bg-gray-800;
+}
