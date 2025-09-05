@@ -74,14 +74,14 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                         <Image
                           src={author.avatar}
                           alt={author.name}
-                          width={176}
-                          height={176}
+                          width={196}
+                          height={196}
                           quality={100}
-                          className="h-10 w-10 rounded-full"
+                          className="h-19 w-19 rounded-full object-cover"
                           priority
                         />
                       )}
-                      <dl className="text-sm leading-5 font-medium whitespace-nowrap">
+                      <dl className="text-lg leading-5 font-medium whitespace-nowrap">
                         <dt className="sr-only">Name</dt>
                         <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
                       </dl>

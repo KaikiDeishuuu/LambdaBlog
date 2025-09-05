@@ -93,6 +93,7 @@ When deploying, remember to set up the same **Environment Variables** in your Ve
 ## 🙏 Acknowledgements
 
 A big thank you to [Timothy Lin](https://www.timlrx.com/) for creating the original [Tailwind Next.js Starter Blog](https://github.com/timlrx/tailwind-nextjs-starter-blog), which provided an excellent foundation for this project.
+
 Additionally, this project references some components from the [Mizuki](https://github.com/matsuzaka-yuki/Mizuki) project. Thanks to the author for the inspiration and implementation.
 
 ## 📄 License
