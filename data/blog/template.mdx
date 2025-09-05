@@ -1,0 +1,141 @@
+---
+title: 'template：探索 MDX 的强大功能'
+date: '2024-01-01'
+tags: ['MDX', 'Next.js', 'Web开发', '教程']
+summary: '这篇文章是一个完美的 MDX 模板，展示了如何组织内容、嵌入图片、代码块，并使用自定义 React 组件来极大地丰富您的博客文章。'
+draft: false
+authors: ['default']
+# --- 以下为可选的许可证字段 ---
+# 如果您想为这篇文章覆盖全局设置，请取消注释并填写
+# licenseName: '知识共享署名 4.0 国际'
+# licenseUrl: 'https://creativecommons.org/licenses/by/4.0/'
+# 如果是转载文章，请填写原文链接
+# sourceLink: 'https://example.com/original-post'
+---
+
+## 什么是 MDX？
+
+MDX 允许您在 Markdown 内容中无缝地使用 JSX。这意味着您可以导入并渲染 React 组件，为您的静态内容带来无限的交互可能性。
+
+这是一个标准的段落，包含 **加粗** 和 _斜体_ 文本。您也可以在这里插入链接，例如，[访问 Next.js 官方网站](https://nextjs.org/)。
+
+---
+
+### 列表与引用
+
+使用列表来组织信息是一种非常好的方式。
+
+- 无序列表项 1
+- 无序列表项 2
+  - 可以嵌套列表
+  - 非常方便
+
+1.  有序列表项 1
+2.  有序列表项 2
+
+> 这是一个引用块。当您想引用他人的话或者强调某段重要信息时，它非常有用。
+
+### 🖼️ 插入图片（推荐方式）
+
+在 `pliny` 模板中，最佳的图片插入方式是使用项目提供的自定义 `<Image />` 组件。这种方式可以利用 Next.js 的图片优化功能（自动适配大小、懒加载等）。
+
+**请确保您的图片放在 `public/static/images` 文件夹下。**
+
+<Image
+  alt="一个描述性的图片替代文本"
+  src="/static/images/template/thegardenofwords.jpg"
+  width="2935"
+  height="1704"
+/>
+*图片的描述文字可以放在这里*
+
+### 💻 代码块与语法高亮
+
+对于技术博客来说，清晰的代码展示至关重要。`pliny` 模板已经内置了 `rehype-prism-plus`，可以为您的代码块自动添加精美的语法高亮。
+
+您只需要在代码块的开头指定语言即可：
+
+```javascript
+// 这是一个 JavaScript 代码块的例子
+import { useState } from 'react'
+
+function Counter() {
+  const [count, setCount] = useState(0)
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  )
+}
+```
+
+```python
+# 这是一个 Python 代码块的例子
+def greet(name):
+  print(f"Hello, {name}!")
+
+greet("World")
+```
+
+```cpp
+// 这是一个 C++ 代码块的例子
+#include <iostream>
+using namespace std;
+
+int main() {
+    cout << "Hello, World!" << endl;
+    return 0;
+}
+```
+
+### ✨ 使用自定义组件（MDX 的真正威力）
+
+这是 MDX 与普通 Markdown 最大的区别。
+
+#### 1. 行内订阅表单
+您可以在文章的任何地方，比如结尾处，插入一个订阅表单来提高转化率。
+
+<BlogNewsletterForm />
+
+#### 2. 自动生成的目录
+如果您想在文章的某个特定位置插入目录，可以使用 `<TOCInline />` 组件。它会自动扫描文章中的所有标题并生成一个可跳转的目录。
+
+<TOCInline toc={props.toc} />
+
+#### 3. 嵌入 HTML 元素
+您也可以直接在 MDX 中使用标准的 HTML 标签，比如创建一个可折叠的内容区域。
+
+<details>
+  <summary>点击这里展开查看更多细节</summary>
+  <p>这里是隐藏的内容，只有在用户点击后才会显示出来。非常适合存放一些补充信息或代码片段。</p>
+</details>
+
+---
+
+## 结论
+
+如此文所示，MDX 为内容创作提供了前所未有的灵活性。通过结合 Markdown 的简洁性和 React 组件的强大功能，您可以创造出丰富、动态且高度优化的内容体验。希望这个模板能帮助您开启高效的创作之旅！
+
+---
+
+### 📝 各部分详细说明
+
+#### 1. Frontmatter (文件头部)
+*   这是文章的“身份证”，包含了所有的元数据。
+*   `title`, `date`, `tags`, `summary` 是必填项，它们对于 SEO 和文章列表页的显示至关重要。
+*   `draft: true` 是一个非常有用的功能。当一篇文章还在写作中时，将其设为 `true`，它就不会出现在最终发布的网站上，但您可以在开发环境中预览它。写完后改为 `false` 即可发布。
+*   `authors: ['default']`：这里的 `default` 会对应您在 `data/authors/default.mdx` 文件中定义的作者信息。如果您有多个作者，可以添加新的作者文件（如 `jane-doe.mdx`），然后在这里写 `authors: ['jane-doe']`。
+
+#### 2. 图片 (`<Image />`)
+*   **路径**: `src` 属性的路径是相对于 `public` 文件夹的。所以，如果您的图片在 `public/static/images/hello.png`，那么 `src` 就应该是 `"/static/images/hello.png"`。
+*   **`alt` 文本**: 务必为每张图片提供有意义的 `alt` 文本，这对于 SEO 和可访问性（方便视障人士的屏幕阅读器）至关重要。
+*   **`width` 和 `height`**: 提供图片的原始宽高比，可以帮助 Next.js 在图片加载时预留空间，防止页面布局跳动，提升用户体验。
+
+#### 3. 自定义组件
+*   **`<BlogNewsletterForm />`**: 这是 `pliny` 内置的组件，可以直接使用。它会自动连接到您已经配置好的 Newsletter 后端。
+*   **`<TOCInline toc={props.toc} />`**: 这个组件会自动接收一个名为 `toc` 的 prop，其中包含了文章的目录结构。您无需做任何额外的事情，只需把它放在您想显示目录的地方即可。
+*   **您自己的组件**: 您也可以创建自己的组件（例如一个“警告/提示”框 `<Callout type="warning">...`），在 `src/components/MDXComponents.tsx` 中注册它，然后就可以在所有 `.mdx` 文件中使用了！
+
+这个模板为您提供了一个坚实的起点。祝您写作愉快！
+```
