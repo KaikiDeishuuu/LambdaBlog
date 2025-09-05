@@ -1,11 +1,11 @@
 {
+  "test": 1,
+  "blog": 1,
   "labview": 1,
   "g-programming": 1,
   "dataflow": 1,
   "state-machine": 1,
   "event-structure": 1,
   "concurrency": 1,
-  "debugging": 1,
-  "test": 1,
-  "blog": 1
+  "debugging": 1
 }
