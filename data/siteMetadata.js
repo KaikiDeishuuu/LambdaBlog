@@ -47,7 +47,7 @@ const siteMetadata = {
   },
   comments: {
     // 你必须提供一个 provider，这里我们选择 'giscus'
-    provider: 'giscus', 
+    provider: 'giscus',
     giscusConfig: {
       // 在这里填写你的 "用户名/仓库名"
       repo: process.env.NEXT_PUBLIC_GISCUS_REPO || 'KaikiDeishuuu/LambdaBlog',
@@ -80,6 +80,12 @@ const siteMetadata = {
     //   apiKey: '599cec31baffa4868cae4e79f180729b',
     //   indexName: 'docsearch',
     // },
+  },
+  // 新增以下配置:License
+  license: {
+    enable: true, // 全局开关
+    name: 'CC BY-NC-SA 4.0',
+    url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
   },
 }
 
