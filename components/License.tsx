@@ -6,7 +6,6 @@ import Link from './Link'
 interface LicenseProps {
   title: string
   author?: string
-  // 我们新增了 pubDate 和 url 这两个属性
   pubDate: string
   url: string
   licenseName?: string
@@ -14,12 +13,11 @@ interface LicenseProps {
   sourceLink?: string
 }
 
-// 一个小型的 SVG 组件，为了代码整洁
 const CreativeCommonsLogo = () => (
   <svg
     width="0.97em"
     height="1em"
-    className="pointer-events-none absolute top-1/2 right-6 -translate-y-1/2 text-[10rem] text-black/5 transition dark:text-white/5"
+    className="pointer-events-none absolute top-1/2 right-6 -translate-y-1/2 text-[8rem] text-black/5 transition dark:text-white/5"
     data-icon="fa6-brands:creative-commons"
   >
     <symbol id="ai:fa6-brands:creative-commons" viewBox="0 0 496 512">
@@ -41,22 +39,17 @@ export default function License({
   licenseUrl,
   sourceLink,
 }: LicenseProps) {
-  // 优先使用文章 frontmatter 的设置，如果不存在，则回退到全局 siteMetadata 的默认设置
   const finalLicenseName = licenseName || siteMetadata.license?.name
   const finalLicenseUrl = licenseUrl || siteMetadata.license?.url
   const displayUrl = sourceLink || url
 
-  // 确保有许可证信息才渲染组件
   if (!finalLicenseName) {
     return null
   }
 
   return (
-    // 父容器：相对定位 + 溢出隐藏，这是让背景 Logo 正常工作的关键
     <div className="relative overflow-hidden rounded-xl border border-gray-200 bg-gray-50 p-6 dark:border-gray-700 dark:bg-gray-800">
       <CreativeCommonsLogo />
-
-      {/* 内容容器：相对定位 + z-10，确保它在 Logo 上方 */}
       <div className="relative z-10">
         <div className="mb-2 font-semibold text-gray-800 dark:text-gray-200">{title}</div>
         <Link
@@ -65,7 +58,8 @@ export default function License({
         >
           {displayUrl}
         </Link>
-        <div className="grid grid-cols-3 gap-4 border-t border-gray-200 pt-4 dark:border-gray-600">
+        {/* --- 关键修复: 添加了响应式类，让网格在手机上垂直堆叠 --- */}
+        <div className="grid grid-cols-1 gap-y-6 border-t border-gray-200 pt-4 sm:grid-cols-3 sm:gap-y-0 dark:border-gray-600">
           <div>
             <div className="text-xs text-gray-500 dark:text-gray-400">作者</div>
             <div className="mt-1 text-sm font-medium text-gray-900 dark:text-gray-100">

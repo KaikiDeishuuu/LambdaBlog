@@ -1,8 +1,8 @@
+// src/components/NewsletterForm.tsx
 'use client'
 
 import { useState } from 'react'
 
-// Spinner 组件无需修改
 const LoadingSpinner = () => (
   <svg
     className="h-5 w-5 animate-spin text-white"
@@ -31,7 +31,6 @@ const NewsletterForm = () => {
   const [state, setState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [message, setMessage] = useState('')
 
-  // subscribe 函数无需修改
   const subscribe = async (e) => {
     e.preventDefault()
     if (!email) return
@@ -62,16 +61,15 @@ const NewsletterForm = () => {
 
   return (
     <div className="w-full">
-      {/* 关键修复 1: 为标题添加浅色模式的颜色 */}
       <h2 className="text-lg font-semibold tracking-tight text-gray-900 dark:text-gray-100">
         Subscribe to our Newsletter
       </h2>
-      {/* 关键修复 2: 为描述文字添加浅色模式的颜色 */}
       <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
         Get the latest articles and updates delivered to your inbox.
       </p>
       <form className="mt-4" onSubmit={subscribe}>
-        <div className="flex items-center gap-4">
+        {/* --- 关键修复: 添加了响应式类，让表单元素在手机上垂直堆叠 --- */}
+        <div className="flex flex-col gap-4 sm:flex-row">
           <div className="relative flex-grow">
             <input
               id="email-address"
@@ -79,7 +77,6 @@ const NewsletterForm = () => {
               type="email"
               autoComplete="email"
               required
-              // --- 颜色已全部替换为 'teal' (对应 #0d9488 的是 teal-600) ---
               className="peer block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-gray-900 transition-colors duration-200 focus:border-teal-600 focus:ring-1 focus:ring-teal-600 focus:outline-none dark:border-gray-700 dark:bg-transparent dark:text-gray-100"
               placeholder="Your email"
               value={email}
@@ -95,8 +92,8 @@ const NewsletterForm = () => {
           <button
             type="submit"
             disabled={state === 'loading'}
-            // --- 颜色已全部替换为 'teal' ---
-            className="relative flex w-32 shrink-0 items-center justify-center rounded-md border border-transparent bg-teal-600 px-5 py-2 font-medium text-white transition-all duration-200 ease-in-out hover:scale-105 hover:bg-teal-700 focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 focus:ring-offset-white focus:outline-none active:scale-100 disabled:cursor-not-allowed disabled:opacity-50 dark:focus:ring-offset-gray-900"
+            // --- 关键修复: 让按钮在手机上全宽，在桌面恢复固定宽度 ---
+            className="relative flex w-full shrink-0 items-center justify-center rounded-md border border-transparent bg-teal-600 px-5 py-2 font-medium text-white transition-all duration-200 ease-in-out hover:scale-105 hover:bg-teal-700 focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 focus:ring-offset-white focus:outline-none active:scale-100 disabled:cursor-not-allowed disabled:opacity-50 sm:w-32 dark:focus:ring-offset-gray-900"
           >
             {state === 'loading' ? <LoadingSpinner /> : 'Subscribe'}
           </button>

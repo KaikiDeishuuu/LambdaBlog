@@ -14,8 +14,6 @@ import { formatDate } from 'pliny/utils/formatDate'
 import NewsletterForm from '@/components/NewsletterForm'
 
 const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
-const discussUrl = (path) =>
-  `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
 
 const postDateTemplate: Intl.DateTimeFormatOptions = {
   weekday: 'long',
@@ -64,6 +62,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               </div>
             </div>
           </header>
+
           <div className="grid-rows-[auto_1fr] divide-y divide-gray-200 pb-8 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0 dark:divide-gray-700">
             <dl className="pt-6 pb-10 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
               <dt className="sr-only">Authors</dt>
@@ -75,14 +74,14 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                         <Image
                           src={author.avatar}
                           alt={author.name}
-                          width={176} // 2倍 CSS 显示尺寸，保证 Retina 清晰
+                          width={176}
                           height={176}
-                          quality={100} // 最大图片质量
-                          className="h-17 w-17 rounded-full object-cover"
-                          priority // 可选：首屏头像优先加载
+                          quality={100}
+                          className="h-10 w-10 rounded-full"
+                          priority
                         />
                       )}
-                      <dl className="text-lg leading-5 font-medium whitespace-nowrap">
+                      <dl className="text-sm leading-5 font-medium whitespace-nowrap">
                         <dt className="sr-only">Name</dt>
                         <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
                       </dl>
@@ -91,66 +90,64 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 </ul>
               </dd>
             </dl>
-            <div className="divide-y divide-gray-200 xl:col-span-3 xl:row-span-2 xl:pb-0 dark:divide-gray-700">
+
+            <div className="xl:col-span-3 xl:row-span-2 xl:pb-0">
               <div className="prose dark:prose-invert max-w-none pt-10 pb-8">{children}</div>
-              {/* --- 更新这里的 License 组件调用 --- */}
-              <div className="pt-6 pb-6">
+
+              {/* License 组件容器 */}
+              <div className="border-t border-gray-200 py-8 dark:border-gray-700">
                 {siteMetadata.license && siteMetadata.license.enable && (
                   <License
                     title={title}
                     author={postAuthor}
-                    // 新增的属性
                     pubDate={formatDate(date, siteMetadata.locale)}
                     url={postUrl}
-                    // 旧有属性
                     licenseName={licenseName}
                     licenseUrl={licenseUrl}
                     sourceLink={sourceLink}
                   />
                 )}
               </div>
-              {/* --- START: 全新升级的并排布局 --- */}
+
+              {/* GitHub 和 Newsletter 并排容器 */}
               <div className="flex flex-col items-start gap-8 border-t border-gray-200 py-8 md:flex-row md:items-center md:justify-between dark:border-gray-700">
-                {/* 左侧: 全新的 GitHub 动态按钮 */}
                 <Link
                   href={editUrl(filePath)}
-                  // 关键修复: 添加 dark: 模式下的 focus offset
                   className="group inline-flex items-center justify-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-sm font-medium text-white transition-all duration-200 ease-in-out hover:scale-105 hover:bg-teal-700 focus:ring-2 focus:ring-teal-600 focus:ring-offset-2 focus:ring-offset-white active:scale-100 dark:focus:ring-offset-gray-900"
                 >
                   <svg
                     role="img"
                     viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
-                    // 关键修复: 确保图标颜色在两种模式下都正确
                     className="h-5 w-5 fill-current text-white"
                   >
                     <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
                   </svg>
                   <span>在 GitHub 上查看</span>
                 </Link>
-
-                {/* 右侧: Newsletter 表单 (保持不变) */}
                 {siteMetadata.newsletter?.provider && (
                   <div className="w-full md:max-w-sm">
                     <NewsletterForm />
                   </div>
                 )}
               </div>
-              {/* --- END: 容器结束 --- */}
+
+              {/* 评论区容器 */}
               {siteMetadata.comments && (
                 <div
-                  className="pt-6 pb-6 text-center text-gray-700 dark:text-gray-300"
+                  className="border-t border-gray-200 pt-8 pb-6 text-center text-gray-700 dark:border-gray-700 dark:text-gray-300"
                   id="comment"
                 >
                   <Comments slug={slug} />
                 </div>
               )}
             </div>
+
             <footer>
-              <div className="divide-gray-200 text-sm leading-5 font-medium xl:col-start-1 xl:row-start-2 xl:divide-y dark:divide-gray-700">
+              <div className="divide-y divide-gray-200 text-sm leading-5 font-medium xl:col-start-1 xl:row-start-2 dark:divide-gray-700">
                 {tags && (
                   <div className="py-4 xl:py-8">
-                    <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                    <h2 className="text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400">
                       Tags
                     </h2>
                     <div className="flex flex-wrap">
@@ -161,10 +158,11 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   </div>
                 )}
                 {(next || prev) && (
-                  <div className="flex justify-between py-4 xl:block xl:space-y-8 xl:py-8">
+                  // --- 关键修复: 确保 Prev/Next 在手机上垂直堆叠 ---
+                  <div className="flex flex-col gap-8 py-4 xl:flex-row xl:justify-between xl:gap-0 xl:space-y-0 xl:py-8">
                     {prev && prev.path && (
                       <div>
-                        <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                        <h2 className="text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400">
                           Previous Article
                         </h2>
                         <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
@@ -173,8 +171,8 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                       </div>
                     )}
                     {next && next.path && (
-                      <div>
-                        <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
+                      <div className="text-right xl:text-left">
+                        <h2 className="text-xs font-semibold tracking-wide text-gray-500 uppercase dark:text-gray-400">
                           Next Article
                         </h2>
                         <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
@@ -185,7 +183,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   </div>
                 )}
               </div>
-              <div className="pt-4 xl:pt-8">
+              <div className="pt-8">
                 <Link
                   href={`/${basePath}`}
                   className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
