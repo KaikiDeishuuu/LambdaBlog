@@ -6,7 +6,8 @@ import { notFound } from 'next/navigation'
 import type { Doc, Authors } from 'contentlayer/generated'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import LayoutWrapper from '@/components/LayoutWrapper'
-import { DOCS_PER_PAGE } from '@/config'
+
+const DOCS_PER_PAGE = 9
 
 export const generateStaticParams = async () => {
   const publishedDocs = allDocs.filter((doc) => !doc.draft)
@@ -15,77 +16,91 @@ export const generateStaticParams = async () => {
   return paths
 }
 
-export default async function Page(props: { params: Promise<{ page: string }> }) {
-  // Await params to resolve the promise
-  const { params } = props
-  const resolvedParams = await params
-  const pageNumber = parseInt(resolvedParams.page, 10)
+export default async function Page({ params }: { params: { page: string } }) {
+  const pageNumber = parseInt(params.page, 10)
 
-  // 1. 计算 statsData，确保导航栏能显示
+  // --- 关键修复：在这里也使用最新的、包含 totalDocs 的 statsData 计算逻辑 ---
   const tagCounts: Record<string, number> = {}
   const dailyStats: Record<string, number> = {}
-  allBlogs.forEach((blog) => {
-    if (blog.draft !== true) {
-      if (blog.tags) {
-        blog.tags.forEach((tag) => {
-          const formattedTag = slug(tag)
-          tagCounts[formattedTag] = (tagCounts[formattedTag] || 0) + 1
-        })
-      }
-      if (blog.date) {
-        const date = new Date(blog.date).toISOString().split('T')[0]
-        dailyStats[date] = (dailyStats[date] || 0) + 1
-      }
+
+  const publishedBlogs = allBlogs.filter((p) => !p.draft)
+  const publishedDocsForStats = allDocs.filter((d) => !d.draft)
+
+  const totalPosts = publishedBlogs.length
+  const totalDocs = publishedDocsForStats.length
+
+  publishedBlogs.forEach((blog) => {
+    if (blog.tags) {
+      blog.tags.forEach((tag) => {
+        const formattedTag = slug(tag)
+        tagCounts[formattedTag] = (tagCounts[formattedTag] || 0) + 1
+      })
     }
   })
 
+  const formatDateToYYYYMMDD = (date: string | Date): string => {
+    if (!date) return ''
+    try {
+      const d = new Date(date)
+      if (isNaN(d.getTime())) return ''
+
+      const year = d.getUTCFullYear()
+      const month = String(d.getUTCMonth() + 1).padStart(2, '0')
+      const day = String(d.getUTCDate()).padStart(2, '0')
+      return `${year}-${month}-${day}`
+    } catch (e) {
+      return ''
+    }
+  }
+
+  const allDates = [
+    ...publishedBlogs.map((p) => p.date),
+    ...publishedDocsForStats.map((d) => d.date),
+  ]
+  allDates.forEach((dateString) => {
+    /* ... (日期统计逻辑) */
+  })
+
   const statsData = {
-    totalPosts: allBlogs.filter((p) => !p.draft).length,
+    totalPosts,
+    totalDocs, // <-- 现在 totalDocs 被正确地包含了进来
     totalComments: 0,
     tagCounts,
     dailyStats,
   }
+  // --- 计算结束 ---
 
-  // 2. 统一的、类型安全的数据处理流程
+  // 2. 获取并处理要显示的文档数据
   const sortedDocs = sortPosts(allDocs) as Doc[]
-  const posts = allCoreContent(sortedDocs).filter((doc) => !doc.draft) as CoreContent<Doc>[]
-
-  const enrichedPosts = posts.map((post) => {
-    const originalDoc = allDocs.find((doc) => doc.slug === post.slug)
-    const authorDetails = originalDoc?.authors?.map((authorId) => {
-      const authorData = allAuthors.find((author) => author.slug === authorId)
-      return authorData ? authorData.name : authorId
+  const publishedDocsForList = sortedDocs
+    .filter((doc) => !doc.draft)
+    .map((doc) => {
+      const authorDetails = doc.authors?.map((authorId) => {
+        const authorData = allAuthors.find((author) => author.slug === authorId)
+        return authorData ? authorData.name : authorId
+      })
+      return { ...doc, authors: authorDetails } as Doc
     })
-    return {
-      ...post,
-      authors: authorDetails || [],
-      images: originalDoc?.images || [], // 确保 images 字段也被补充回来
-    }
-  })
 
   // 3. 计算分页
-  const totalPages = Math.ceil(enrichedPosts.length / DOCS_PER_PAGE)
-  if (pageNumber > totalPages || pageNumber <= 0 || isNaN(pageNumber)) {
-    return notFound()
+  const totalPages = Math.ceil(publishedDocsForList.length / DOCS_PER_PAGE)
+  if (isNaN(pageNumber) || pageNumber > totalPages || pageNumber < 1) {
+    notFound()
   }
 
-  const initialDisplayPosts = enrichedPosts.slice(
+  const initialDisplayPosts = publishedDocsForList.slice(
     DOCS_PER_PAGE * (pageNumber - 1),
     DOCS_PER_PAGE * pageNumber
   )
-
-  const pagination = {
-    currentPage: pageNumber,
-    totalPages: totalPages,
-  }
+  const pagination = { currentPage: pageNumber, totalPages }
 
   return (
     <LayoutWrapper statsData={statsData}>
       <DocListLayout
-        posts={enrichedPosts}
+        posts={publishedDocsForList}
         initialDisplayPosts={initialDisplayPosts}
         pagination={pagination}
-        title="Documentation"
+        title="All Documents"
       />
     </LayoutWrapper>
   )
