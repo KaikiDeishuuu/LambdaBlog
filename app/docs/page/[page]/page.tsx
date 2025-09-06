@@ -3,11 +3,16 @@ import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
 import { allDocs, allBlogs, allAuthors } from 'contentlayer/generated'
 import { slug } from 'github-slugger'
 import { notFound } from 'next/navigation'
-import type { Doc, Authors } from 'contentlayer/generated'
-import { CoreContent } from 'pliny/utils/contentlayer'
+import type { Doc, Authors } from 'contentlayer/generated' // 导入 Authors
 import LayoutWrapper from '@/components/LayoutWrapper'
 
+// 定义每页显示的文档数量
 const DOCS_PER_PAGE = 9
+
+// --- 关键修复 1: 定义一个在 Vercel 构建时绝对兼容的 Props 类型 ---
+interface PageProps {
+  params: Promise<{ page: string }>
+}
 
 export const generateStaticParams = async () => {
   const publishedDocs = allDocs.filter((doc) => !doc.draft)
@@ -16,13 +21,14 @@ export const generateStaticParams = async () => {
   return paths
 }
 
-export default async function Page({ params }: { params: { page: string } }) {
-  const pageNumber = parseInt(params.page, 10)
+export default async function Page({ params }: PageProps) {
+  // --- 关键修复 2: 在函数顶部 await Promise 类型的 params ---
+  const resolvedParams = await params
+  const pageNumber = parseInt(resolvedParams.page, 10)
 
-  // --- 关键修复：在这里也使用最新的、包含 totalDocs 的 statsData 计算逻辑 ---
+  // 1. 计算 statsData
   const tagCounts: Record<string, number> = {}
   const dailyStats: Record<string, number> = {}
-
   const publishedBlogs = allBlogs.filter((p) => !p.draft)
   const publishedDocsForStats = allDocs.filter((d) => !d.draft)
 
@@ -38,12 +44,12 @@ export default async function Page({ params }: { params: { page: string } }) {
     }
   })
 
+  // 健壮的日期格式化函数
   const formatDateToYYYYMMDD = (date: string | Date): string => {
     if (!date) return ''
     try {
       const d = new Date(date)
       if (isNaN(d.getTime())) return ''
-
       const year = d.getUTCFullYear()
       const month = String(d.getUTCMonth() + 1).padStart(2, '0')
       const day = String(d.getUTCDate()).padStart(2, '0')
@@ -58,17 +64,21 @@ export default async function Page({ params }: { params: { page: string } }) {
     ...publishedDocsForStats.map((d) => d.date),
   ]
   allDates.forEach((dateString) => {
-    /* ... (日期统计逻辑) */
+    if (dateString) {
+      const formattedDate = formatDateToYYYYMMDD(dateString)
+      if (formattedDate) {
+        dailyStats[formattedDate] = (dailyStats[formattedDate] || 0) + 1
+      }
+    }
   })
 
   const statsData = {
     totalPosts,
-    totalDocs, // <-- 现在 totalDocs 被正确地包含了进来
+    totalDocs,
     totalComments: 0,
     tagCounts,
     dailyStats,
   }
-  // --- 计算结束 ---
 
   // 2. 获取并处理要显示的文档数据
   const sortedDocs = sortPosts(allDocs) as Doc[]
@@ -92,7 +102,11 @@ export default async function Page({ params }: { params: { page: string } }) {
     DOCS_PER_PAGE * (pageNumber - 1),
     DOCS_PER_PAGE * pageNumber
   )
-  const pagination = { currentPage: pageNumber, totalPages }
+
+  const pagination = {
+    currentPage: pageNumber,
+    totalPages: totalPages,
+  }
 
   return (
     <LayoutWrapper statsData={statsData}>
