@@ -7,9 +7,16 @@ import { motion } from 'framer-motion'
 // --- 关键修改 2: 导入 'dynamic' ---
 import dynamic from 'next/dynamic'
 
+const LoadingPlaceholder = () => (
+  <div className="flex h-32 animate-pulse items-center justify-center rounded-md bg-gray-100 dark:bg-gray-800">
+    <p className="text-gray-500">Loading Calendar...</p>
+  </div>
+)
 // --- 关键修改 3: 使用 dynamic 异步加载并禁用 SSR ---
 const ActivityCalendar = dynamic(() => import('react-activity-calendar'), {
   ssr: false,
+  // --- 在这里添加 loading 属性 ---
+  loading: () => <LoadingPlaceholder />,
 })
 
 interface Props {

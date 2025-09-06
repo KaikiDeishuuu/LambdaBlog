@@ -16,10 +16,9 @@ export const generateStaticParams = async () => {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string[] }>
+  params: { slug: string[] }
 }): Promise<Metadata> {
-  const resolvedParams = await params // Await params
-  const slugPath = decodeURI(resolvedParams.slug.join('/'))
+  const slugPath = decodeURI(params.slug.join('/'))
   const doc = allDocs.find((p) => p.slug === slugPath)
   if (!doc) {
     return {}
@@ -30,11 +29,10 @@ export async function generateMetadata({
   })
 }
 
-export default async function Page({ params }: { params: Promise<{ slug: string[] }> }) {
-  const resolvedParams = await params // Await params
-  const slugPath = decodeURI(resolvedParams.slug.join('/'))
+export default async function Page({ params }: { params: { slug: string[] } }) {
+  const slugPath = decodeURI(params.slug.join('/'))
 
-  // 1. 获取并处理当前文档的数据
+  // 1. 获取并处理当前文档、前后导航及作者数据
   const sortedDocs = sortPosts(allDocs) as Doc[]
   const docIndex = sortedDocs.findIndex((p) => p.slug === slugPath)
 
@@ -45,39 +43,49 @@ export default async function Page({ params }: { params: Promise<{ slug: string[
   const prev = coreContent(sortedDocs[docIndex + 1])
   const next = coreContent(sortedDocs[docIndex - 1])
   const doc = sortedDocs[docIndex]
+
+  // --- 关键修复 1: 在这里定义 mainContent ---
   const mainContent = coreContent(doc)
 
+  // --- 关键修复 2: 在这里定义 authorDetails ---
   const authorDetails = doc.authors?.map((authorId) => {
     const authorData = allAuthors.find((author) => author.slug === authorId)
     return coreContent(authorData as Authors)
   })
 
-  // --- 统计数据计算逻辑 ---
+  // 2. 计算 statsData
   const tagCounts: Record<string, number> = {}
   const dailyStats: Record<string, number> = {}
+  const publishedBlogs = allBlogs.filter((p) => !p.draft)
+  const publishedDocs = allDocs.filter((d) => !d.draft)
 
-  allBlogs.forEach((blog) => {
-    if (blog.draft !== true) {
-      if (blog.tags) {
-        blog.tags.forEach((tag) => {
-          const formattedTag = slug(tag)
-          tagCounts[formattedTag] = (tagCounts[formattedTag] || 0) + 1
-        })
-      }
-      if (blog.date) {
-        const date = new Date(blog.date).toISOString().split('T')[0]
-        dailyStats[date] = (dailyStats[date] || 0) + 1
-      }
+  const totalPosts = publishedBlogs.length
+  const totalDocs = publishedDocs.length
+
+  publishedBlogs.forEach((blog) => {
+    if (blog.tags) {
+      blog.tags.forEach((tag) => {
+        const formattedTag = slug(tag)
+        tagCounts[formattedTag] = (tagCounts[formattedTag] || 0) + 1
+      })
+    }
+  })
+
+  const allDates = [...publishedBlogs.map((p) => p.date), ...publishedDocs.map((d) => d.date)]
+  allDates.forEach((dateString) => {
+    if (dateString) {
+      const date = new Date(dateString).toISOString().split('T')[0]
+      dailyStats[date] = (dailyStats[date] || 0) + 1
     }
   })
 
   const statsData = {
-    totalPosts: allBlogs.filter((p) => !p.draft).length,
-    totalComments: 0, // 暂时硬编码为 0
+    totalPosts,
+    totalDocs,
+    totalComments: 0,
     tagCounts,
     dailyStats,
   }
-  // --- 计算结束 ---
 
   return (
     <LayoutWrapper statsData={statsData}>
