@@ -6,7 +6,17 @@ import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'bo
 import Link from './Link'
 import headerNavLinks from '@/data/headerNavLinks'
 import ThemeSwitch from './ThemeSwitch'
-import { FiHome, FiFileText, FiTag, FiFilm, FiInfo, FiMoon, FiSun, FiX } from 'react-icons/fi'
+import {
+  FiHome,
+  FiFileText,
+  FiBookOpen,
+  FiTag,
+  FiFilm,
+  FiInfo,
+  FiMoon,
+  FiSun,
+  FiX,
+} from 'react-icons/fi'
 
 interface LinkItem {
   type: 'link'
@@ -64,9 +74,9 @@ const MobileNav: React.FC<MobileNavProps> = ({ isOtherPanelOpen = false }) => {
     },
     {
       type: 'link',
-      title: 'Tags',
-      href: '/tags',
-      icon: <FiTag className="mr-3 inline-block text-xl" />,
+      title: 'Docs',
+      href: '/docs',
+      icon: <FiBookOpen className="mr-3 inline-block text-xl" />, // 使用 FiBookOpen 图标
     },
     {
       type: 'link',

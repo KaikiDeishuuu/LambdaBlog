@@ -1,8 +1,9 @@
-// file: types/stats.d.ts
+// src/types/stats.ts
 
-export type StatsData = {
-  totalPosts: number
-  totalComments: number
+export interface StatsData {
   tagCounts: Record<string, number>
   dailyStats: Record<string, number>
+  totalPosts: number
+  totalDocs: number
+  totalComments: number
 }

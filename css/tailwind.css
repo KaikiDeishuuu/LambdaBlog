@@ -8,7 +8,7 @@
 @theme {
   /* 保留你原有的字体和颜色设计 */
   --font-sans:
-    var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    var(--fon@import 'react-activity-calendar/dist/style.css';t-space-grotesk), ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
   --color-primary-50: oklch(0.971 0.014 343.198);

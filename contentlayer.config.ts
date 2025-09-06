@@ -1,3 +1,5 @@
+// contentlayer.config.ts
+
 import { defineDocumentType, ComputedFields, makeSource } from 'contentlayer2/source-files'
 import { writeFileSync } from 'fs'
 import readingTime from 'reading-time'
@@ -29,7 +31,7 @@ import prettier from 'prettier'
 const root = process.cwd()
 const isProduction = process.env.NODE_ENV === 'production'
 
-// heroicon mini link
+// heroicon mini link for autolink headings
 const icon = fromHtmlIsomorphic(
   `
   <span class="content-header-link">
@@ -59,9 +61,6 @@ const computedFields: ComputedFields = {
   toc: { type: 'json', resolve: (doc) => extractTocHeadings(doc.body.raw) },
 }
 
-/**
- * Count the occurrences of all tags across blog posts and write to json file
- */
 async function createTagCount(allBlogs) {
   const tagCount: Record<string, number> = {}
   allBlogs.forEach((file) => {
@@ -92,6 +91,8 @@ function createSearchIndex(allBlogs) {
     console.log('Local search index generated...')
   }
 }
+
+// --- Content Type Definitions ---
 
 export const Blog = defineDocumentType(() => ({
   name: 'Blog',
@@ -151,9 +152,27 @@ export const Authors = defineDocumentType(() => ({
   computedFields,
 }))
 
+// --- 关键修复：将 Doc 的定义移到这里 ---
+export const Doc = defineDocumentType(() => ({
+  name: 'Doc',
+  filePathPattern: `docs/**/*.mdx`,
+  contentType: 'mdx',
+  fields: {
+    title: { type: 'string', required: true },
+    date: { type: 'date', required: true },
+    summary: { type: 'string' },
+    draft: { type: 'boolean' },
+    authors: { type: 'list', of: { type: 'string' } }, // 新增
+    cover: { type: 'string' }, // 新增
+    images: { type: 'json' }, // <-- 关键修复：类型改为 'json'
+  },
+  computedFields,
+}))
+// --- Source Configuration ---
+
 export default makeSource({
   contentDirPath: 'data',
-  documentTypes: [Blog, Authors],
+  documentTypes: [Blog, Authors, Doc], // <-- 确保 Doc 在这里
   mdx: {
     cwd: process.cwd(),
     remarkPlugins: [
