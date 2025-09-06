@@ -5007,6 +5007,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chalk@npm:^5.4.1":
+  version: 5.6.0
+  resolution: "chalk@npm:5.6.0"
+  checksum: 245d4b53c29c88da9e291f318c86b6b3ee65aa81568f9e10fafc984a6ef520412dee513057d07cc0f4614ab5a46cb07a0394fab3794d88d48c89c17b2d8fbf7f
+  languageName: node
+  linkType: hard
+
 "character-entities-html4@npm:^2.0.0":
   version: 2.1.0
   resolution: "character-entities-html4@npm:2.1.0"
@@ -11605,6 +11612,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"shadcn-ui@npm:^0.9.5":
+  version: 0.9.5
+  resolution: "shadcn-ui@npm:0.9.5"
+  dependencies:
+    chalk: ^5.4.1
+  bin:
+    shadcn-ui: dist/index.js
+  checksum: 86427dd6f3ddc70bfa9217e39b8afdd65220c7ee41911ef0afd06b9f1b6ce00d9cb5056210070854177561a3fa08ac90d3f2d8621812628345e3a25774538398
+  languageName: node
+  linkType: hard
+
 "sharp@npm:^0.33.5":
   version: 0.33.5
   resolution: "sharp@npm:0.33.5"
@@ -12271,6 +12289,7 @@ __metadata:
     remark-gfm: ^4.0.0
     remark-github-blockquote-alert: ^1.2.1
     remark-math: ^6.0.0
+    shadcn-ui: ^0.9.5
     tailwindcss: ^4.1.12
     typescript: ^5.1.3
     unist-util-visit: ^5.0.0
