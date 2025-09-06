@@ -10,6 +10,7 @@ interface Props {
   totalTags: number
 }
 
+// 移除了评论指标，因为目前为 0
 const metrics = [
   { name: '总文章', key: 'totalPosts', icon: DocumentTextIcon },
   { name: '总文档', key: 'totalDocs', icon: BookOpenIcon },
@@ -31,7 +32,6 @@ const KeyMetrics = ({ totalPosts, totalDocs, totalTags }: Props) => {
             <dt className="truncate text-sm font-medium text-gray-500 dark:text-gray-400">
               {item.name}
             </dt>
-            {/* --- 关键修复：添加了 text-gray-900 --- */}
             <dd className="mt-1 text-3xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
               <CountUp end={data[item.key] || 0} duration={2} />
             </dd>

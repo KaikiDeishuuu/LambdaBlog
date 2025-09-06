@@ -4,7 +4,7 @@ import { allBlogs, allDocs } from 'contentlayer/generated'
 import { slug } from 'github-slugger'
 import { StatsData } from '../types/stats'
 
-// 这是一个更健壮、能避免时区问题的日期格式化函数
+// 健壮的日期格式化函数，确保输出 YYYY-MM-DD
 const formatDateToYYYYMMDD = (date: string | Date): string => {
   if (!date) return ''
   try {
@@ -12,13 +12,12 @@ const formatDateToYYYYMMDD = (date: string | Date): string => {
     // 检查日期是否有效
     if (isNaN(d.getTime())) return ''
 
-    // 使用 getUTC... 方法来避免本地时区的影响
     const year = d.getUTCFullYear()
     const month = String(d.getUTCMonth() + 1).padStart(2, '0')
     const day = String(d.getUTCDate()).padStart(2, '0')
     return `${year}-${month}-${day}`
   } catch (e) {
-    return '' // 如果 new Date() 失败，返回空字符串
+    return ''
   }
 }
 
@@ -28,28 +27,27 @@ export function getStatsData(): StatsData {
 
   const totalPosts = publishedBlogs.length
   const totalDocs = publishedDocs.length
-  const totalComments = 0
+  const totalComments = 0 // 暂时硬编码
 
-  const tagCounts: Record<string, number> = {
-    /* ... */
-  }
+  const tagCounts: Record<string, number> = {}
+  publishedBlogs.forEach((blog) => {
+    blog.tags?.forEach((tag) => {
+      const formattedTag = slug(tag)
+      tagCounts[formattedTag] = (tagCounts[formattedTag] || 0) + 1
+    })
+  })
 
   const dailyStats: Record<string, number> = {}
+  const allContent = [...publishedBlogs, ...publishedDocs]
 
-  const processDates = (contentItems: { date?: string }[]) => {
-    contentItems.forEach((item) => {
-      if (item.date) {
-        // --- 确保这里使用了新的、健壮的格式化函数 ---
-        const formattedDate = formatDateToYYYYMMDD(item.date)
-        if (formattedDate) {
-          dailyStats[formattedDate] = (dailyStats[formattedDate] || 0) + 1
-        }
+  allContent.forEach((item) => {
+    if (item.date) {
+      const formattedDate = formatDateToYYYYMMDD(item.date)
+      if (formattedDate) {
+        dailyStats[formattedDate] = (dailyStats[formattedDate] || 0) + 1
       }
-    })
-  }
-
-  processDates(publishedBlogs)
-  processDates(publishedDocs)
+    }
+  })
 
   return { tagCounts, dailyStats, totalPosts, totalDocs, totalComments }
 }
