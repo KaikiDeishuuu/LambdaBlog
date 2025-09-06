@@ -12,7 +12,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from '@/components/components/ui/select'
 
 const ActivityCalendar = dynamic(() => import('react-activity-calendar'), { ssr: false })
 
@@ -56,7 +56,10 @@ const PostActivityCalendar = ({ dailyStats = {} }: Props) => {
       <div className="rounded-xl bg-white p-6 shadow-md dark:bg-slate-800">
         <div className="mb-2 flex items-center justify-between">
           <h3 className="text-lg font-bold text-gray-800 dark:text-gray-200">文章贡献日历</h3>
-          <Select value={String(selectedYear)} onValueChange={(val) => setSelectedYear(Number(val))}>
+          <Select
+            value={String(selectedYear)}
+            onValueChange={(val) => setSelectedYear(Number(val))}
+          >
             <SelectTrigger className="w-[100px]">
               <SelectValue placeholder="选择年份" />
             </SelectTrigger>
