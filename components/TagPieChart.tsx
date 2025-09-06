@@ -22,7 +22,7 @@ const TagPieChart = ({ tagCounts }: Props) => {
     const baseHue = 200
     for (let i = 0; i < numColors; i++) {
       const hue = (baseHue + i * (360 / 1.618)) % 360 // Golden ratio
-      colors.push(`hsla(${hue}, 55%, 70%, 1)`)
+      colors.push(`hsla(${hue}, 80%, 60%, 1)`)
     }
     return colors
   }
@@ -34,7 +34,7 @@ const TagPieChart = ({ tagCounts }: Props) => {
         data: dataValues,
         backgroundColor: generateColors(labels.length),
         borderColor: theme === 'dark' ? '#1e293b' : '#ffffff', // slate-800 or white
-        borderWidth: 4,
+        borderWidth: 3,
       },
     ],
   }
@@ -42,16 +42,16 @@ const TagPieChart = ({ tagCounts }: Props) => {
   const options: ChartOptions<'doughnut'> = {
     responsive: true,
     maintainAspectRatio: false,
-    cutout: '60%',
+    cutout: '50%',
     plugins: {
       legend: {
         position: 'bottom' as const,
         labels: {
           color: theme === 'dark' ? '#94a3b8' : '#64748b', // slate-400 or slate-500
-          font: { size: 12 },
-          padding: 20,
+          font: { size: 15 },
+          padding: 15,
           usePointStyle: true,
-          pointStyle: 'rect',
+          pointStyle: 'rectRounded',
         },
       },
       title: { display: false },
@@ -76,7 +76,7 @@ const TagPieChart = ({ tagCounts }: Props) => {
       <h3 className="mb-4 text-center text-lg font-bold text-gray-800 dark:text-gray-200">
         标签分布
       </h3>
-      <div className="relative mx-auto h-[350px] w-full max-w-[350px] sm:h-[400px] sm:max-w-[400px]">
+      <div className="relative mx-auto h-[450px] w-full max-w-[450px] sm:h-[400px] sm:max-w-[400px]">
         <Doughnut options={options} data={data} />
       </div>
     </div>
