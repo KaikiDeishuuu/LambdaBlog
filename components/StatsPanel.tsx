@@ -5,7 +5,7 @@ import { Fragment } from 'react'
 import { Dialog, DialogPanel, Transition, TransitionChild } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import TagPieChart from './TagPieChart'
-// import PostActivityCalendar from './ActivityCalendar'
+import PostActivityCalendar from './ActivityCalendar'
 import KeyMetrics from './KeyMetrics'
 import { StatsData } from '../types/stats'
 
